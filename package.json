@@ -1,0 +1,27 @@
+{
+  "name": "http-graceful-shutdown",
+  "version": "1.0.0",
+  "description": "gracefully shuts downs http server",
+  "main": "./lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sebhildebrandt/http-graceful-shutdown.git"
+  },
+  "keywords": [
+    "http",
+    "graceful-shutdown"
+  ],
+  "author": "Sebastian Hildebrandt <hildebrandt@plus-innovations.com> (https://plus-innovations.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sebhildebrandt/http-graceful-shutdown/issues"
+  },
+  "homepage": "https://github.com/sebhildebrandt/http-graceful-shutdown",
+  "dependencies": {
+    "debug": "^2.2.0",
+    "lodash": "^3.10.1"
+  }
+}
