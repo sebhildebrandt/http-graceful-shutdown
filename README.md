@@ -21,7 +21,7 @@ var gracefulShutdown = require('http-graceful-shutdown');
 server = app.listen(...);
 ...
 
-// this enables the graceful shtdown
+// this enables the graceful shutdown
 gracefulShutdown(server);
 ```
 
@@ -38,7 +38,7 @@ var gracefulShutdown = require('http-graceful-shutdown');
 server = app.listen(...);
 ...
 
-// this enables the graceful shtdown
+// this enables the graceful shutdown with advanced options
 gracefulShutdown(server,
 	{
 		signals: 'SIGINT SIGTERM',
@@ -64,6 +64,7 @@ gracefulShutdown(server,
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
+| 1.0.1          | 2015-09-14     | updated docs, reformated code |
 | 1.0.0          | 2015-09-14     | initial release |
 
 
