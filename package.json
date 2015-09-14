@@ -23,5 +23,6 @@
   "dependencies": {
     "debug": "^2.2.0",
     "lodash": "^3.10.1"
-  }
+  },
+  "engineStrict": true
 }
