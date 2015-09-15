@@ -1,9 +1,11 @@
 # http-graceful-shutdown
 
-Gracefully shuts down node http server - can be used with http, express, koa, ...
+Gracefully shuts down node http server - can be used with [express][express-url], [koa][koa-url], native node [http][http-url], ...
 
   [![NPM Version][npm-image]][npm-url]
   [![NPM Downloads][downloads-image]][downloads-url]
+  [![MIT license][license-img]][license-url]
+  [![deps status][daviddm-img]][daviddm-url]
 
 ## Quick Start
 
@@ -54,7 +56,7 @@ gracefulShutdown(server,
 ### Option Reference
 
 | option         | default | Comments |
-| -------------- | ------- | -------- |
+| -------------- | --------------------- | ---------------------- |
 | signals | 'SIGINT SIGTERM' | define the signals, that should be handeled (separated by SPACE) |
 | timeout | 30000 | timeout till forced shutdown (in milli seconds) |
 | development | false | if set to true, no graceful shutdown is proceeded to speed up dev-process |
@@ -76,13 +78,13 @@ Sincerely,
 
 Sebastian Hildebrandt, [+innovations](http://www.plus-innovations.com)
 
-#### Credits
+## Credits
 
 Written by Sebastian Hildebrandt [sebhildebrandt](https://github.com/sebhildebrandt)
 
-#### License
+## License [![MIT license][license-img]][license-url]
 
->The MIT License (MIT)
+>The [`MIT`][license-url] License (MIT)
 >
 >Copyright &copy; 2015 Sebastian Hildebrandt, [+innovations](http://www.plus-innovations.com).
 >
@@ -104,7 +106,18 @@ Written by Sebastian Hildebrandt [sebhildebrandt](https://github.com/sebhildebra
 >OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 >THE SOFTWARE.
 
-[npm-image]: https://img.shields.io/npm/v/http-graceful-shutdown.svg
+[npm-image]: https://img.shields.io/npm/v/http-graceful-shutdown.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/http-graceful-shutdown
-[downloads-image]: https://img.shields.io/npm/dm/http-graceful-shutdown.svg
+[downloads-image]: https://img.shields.io/npm/dm/http-graceful-shutdown.svg?style=flat-square
 [downloads-url]: https://npmjs.org/package/http-graceful-shutdown
+
+[license-url]: https://github.com/sebhildebrandt/http-graceful-shutdown/blob/master/LICENSE
+[license-img]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
+[npmjs-license]: https://img.shields.io/npm/l/http-graceful-shutdown.svg?style=flat-square
+
+[express-url]: https://github.com/strongloop/expressjs.com
+[koa-url]: https://github.com/koajs/koa
+[http-url]: https://nodejs.org/api/http.html
+
+[daviddm-url]: https://david-dm.org/sebhildebrandt/http-graceful-shutdown
+[daviddm-img]: https://img.shields.io/david/sebhildebrandt/http-graceful-shutdown.svg?style=flat-square
