@@ -4,8 +4,9 @@ Gracefully shuts down node http server - can be used with [express][express-url]
 
   [![NPM Version][npm-image]][npm-url]
   [![NPM Downloads][downloads-image]][downloads-url]
-  [![MIT license][license-img]][license-url]
+  [![Git Issues][issues-img]][issues-url]
   [![deps status][daviddm-img]][daviddm-url]
+  [![MIT license][license-img]][license-url]
 
 ## Quick Start
 
@@ -122,3 +123,6 @@ Written by Sebastian Hildebrandt [sebhildebrandt](https://github.com/sebhildebra
 
 [daviddm-url]: https://david-dm.org/sebhildebrandt/http-graceful-shutdown
 [daviddm-img]: https://img.shields.io/david/sebhildebrandt/http-graceful-shutdown.svg?style=flat-square
+
+[issues-img]: https://img.shields.io/github/issues/sebhildebrandt/http-graceful-shutdown.svg?style=flat-square
+[issues-url]: https://github.com/sebhildebrandt/http-graceful-shutdown/issues
