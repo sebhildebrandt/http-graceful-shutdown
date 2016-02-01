@@ -67,6 +67,8 @@ gracefulShutdown(server,
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
+| 1.0.5          | 2016-02-01     | better handling of closing connections |
+| 1.0.4          | 2015-10-01     | small fixes |
 | 1.0.3          | 2015-09-15     | updated docs |
 | 1.0.1          | 2015-09-14     | updated docs, reformated code |
 | 1.0.0          | 2015-09-14     | initial release |
@@ -88,7 +90,7 @@ Written by Sebastian Hildebrandt [sebhildebrandt](https://github.com/sebhildebra
 
 >The [`MIT`][license-url] License (MIT)
 >
->Copyright &copy; 2015 Sebastian Hildebrandt, [+innovations](http://www.plus-innovations.com).
+>Copyright &copy; 2015-2016 Sebastian Hildebrandt, [+innovations](http://www.plus-innovations.com).
 >
 >Permission is hereby granted, free of charge, to any person obtaining a copy
 >of this software and associated documentation files (the "Software"), to deal
