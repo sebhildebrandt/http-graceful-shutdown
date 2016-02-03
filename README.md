@@ -63,10 +63,26 @@ gracefulShutdown(server,
 | development | false | if set to true, no graceful shutdown is proceeded to speed up dev-process |
 | callback | - | here you can place a small (not time consuming) callback function, that will be handeled at the end of the shutdown (not in dev-mode) |
 
+### Debug
+
+If you want to get debug notes ([debug][debug-url] is a dependency of this module), just set the DEBUG environment variable to enable
+ debugging:
+
+```
+export DEBUG=http-graeceful-shutdown
+```
+
+OR on Windows:
+
+```
+set DEBUG=http-graeceful-shutdown
+```
+
 ## Version history
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
+| 1.0.6          | 2016-02-03     | adding more explicit debug information and documentation |
 | 1.0.5          | 2016-02-01     | better handling of closing connections |
 | 1.0.4          | 2015-10-01     | small fixes |
 | 1.0.3          | 2015-09-15     | updated docs |
@@ -122,6 +138,7 @@ Written by Sebastian Hildebrandt [sebhildebrandt](https://github.com/sebhildebra
 [express-url]: https://github.com/strongloop/expressjs.com
 [koa-url]: https://github.com/koajs/koa
 [http-url]: https://nodejs.org/api/http.html
+[debug-url]: https://github.com/visionmedia/debug
 
 [daviddm-url]: https://david-dm.org/sebhildebrandt/http-graceful-shutdown
 [daviddm-img]: https://img.shields.io/david/sebhildebrandt/http-graceful-shutdown.svg?style=flat-square
