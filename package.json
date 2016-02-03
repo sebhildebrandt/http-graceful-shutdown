@@ -1,6 +1,6 @@
 {
   "name": "http-graceful-shutdown",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "gracefully shuts downs http server",
   "main": "./lib/index.js",
   "scripts": {
