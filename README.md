@@ -41,27 +41,45 @@ var gracefulShutdown = require('http-graceful-shutdown');
 server = app.listen(...);
 ...
 
+// your personal cleanup function - this one takes one second to complete
+function cleanup() {
+  return new Promise((resolve) => {
+  	console.log('... in cleanup')
+  	setTimeout(function() {
+  		console.log('... cleanup finished');
+  		resolve();
+  	}, 1000)       
+  });
+}
+
 // this enables the graceful shutdown with advanced options
 gracefulShutdown(server,
 	{
 		signals: 'SIGINT SIGTERM',
 		timeout: 30000,
 		development: false,
-		callback: function() {
+		onShutdown: cleanup,
+		finally: function() {
 			console.log('Server gracefulls shutted down.....')
 		}
 	}
 );
 ```
 
+### Major (breaking) Changes - Version 2
+
+- **renamed** option: `callback`: now to `finally`: place your (not time consuming) function, that will be handled at the end of the shutdown (not in dev-mode)
+- **new** option: `onShutdown`: place your function, that will handle your additional cleanup things. Needs to return a promise
+
 ### Option Reference
 
 | option         | default | Comments |
 | -------------- | --------------------- | ---------------------- |
-| signals | 'SIGINT SIGTERM' | define the signals, that should be handeled (separated by SPACE) |
+| signals | 'SIGINT SIGTERM' | define the signals, that should be handled (separated by SPACE) |
 | timeout | 30000 | timeout till forced shutdown (in milli seconds) |
 | development | false | if set to true, no graceful shutdown is proceeded to speed up dev-process |
-| callback | - | here you can place a small (not time consuming) callback function, that will be handeled at the end of the shutdown (not in dev-mode) |
+| onShutdown | - | place your (not time consuming) callback function, that will handle your additional cleanup things. Needs to return a promise |
+| finally | - | here you can place a small (not time consuming) function, that will be handled at the end of the shutdown (not in dev-mode) |
 
 ### Debug
 
@@ -82,6 +100,7 @@ set DEBUG=http-graeceful-shutdown
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
+| 2.0.0          | 2017-04-24     | added 'onShutdown' callback, renamed 'callback' to 'finally' |
 | 1.0.6          | 2016-02-03     | adding more explicit debug information and documentation |
 | 1.0.5          | 2016-02-01     | better handling of closing connections |
 | 1.0.4          | 2015-10-01     | small fixes |
@@ -106,7 +125,7 @@ Written by Sebastian Hildebrandt [sebhildebrandt](https://github.com/sebhildebra
 
 >The [`MIT`][license-url] License (MIT)
 >
->Copyright &copy; 2015-2016 Sebastian Hildebrandt, [+innovations](http://www.plus-innovations.com).
+>Copyright &copy; 2015-2017 Sebastian Hildebrandt, [+innovations](http://www.plus-innovations.com).
 >
 >Permission is hereby granted, free of charge, to any person obtaining a copy
 >of this software and associated documentation files (the "Software"), to deal

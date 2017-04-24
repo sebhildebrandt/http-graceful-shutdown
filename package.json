@@ -21,8 +21,10 @@
   },
   "homepage": "https://github.com/sebhildebrandt/http-graceful-shutdown",
   "dependencies": {
-    "debug": "^2.2.0",
-    "lodash": "^4.1.0"
+    "debug": "^2.6.4"
   },
-  "engineStrict": true
+  "engineStrict": true,
+  "engines": {
+    "node": ">=4.0.0"
+  }
 }
