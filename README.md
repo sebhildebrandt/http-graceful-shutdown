@@ -100,7 +100,7 @@ set DEBUG=http-graeceful-shutdown
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
-| 2.0.0          | 2017-04-24     | added 'onShutdown' callback, renamed 'callback' to 'finally' |
+| 2.0.0          | 2017-04-24     | added 'onShutdown' option, renamed 'callback' option to 'finally' |
 | 1.0.6          | 2016-02-03     | adding more explicit debug information and documentation |
 | 1.0.5          | 2016-02-01     | better handling of closing connections |
 | 1.0.4          | 2015-10-01     | small fixes |
