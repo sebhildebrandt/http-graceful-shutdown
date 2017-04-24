@@ -36,7 +36,7 @@ You can pass an options-object to specify your specific options for the graceful
 The following example uses specifies all possible options (using more or less the default settings):
 
 ```
-var gracefulShutdown = require('http-graceful-shutdown');
+const gracefulShutdown = require('http-graceful-shutdown');
 ...
 server = app.listen(...);
 ...
@@ -100,6 +100,7 @@ set DEBUG=http-graeceful-shutdown
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
+| 2.0.1          | 2017-04-24     | modified documentation |
 | 2.0.0          | 2017-04-24     | added 'onShutdown' option, renamed 'callback' option to 'finally' |
 | 1.0.6          | 2016-02-03     | adding more explicit debug information and documentation |
 | 1.0.5          | 2016-02-01     | better handling of closing connections |
