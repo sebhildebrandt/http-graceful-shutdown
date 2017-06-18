@@ -12,7 +12,9 @@
   },
   "keywords": [
     "http",
-    "graceful-shutdown"
+    "graceful-shutdown",
+    "koa",
+    "express"
   ],
   "author": "Sebastian Hildebrandt <hildebrandt@plus-innovations.com> (https://plus-innovations.com)",
   "license": "MIT",
