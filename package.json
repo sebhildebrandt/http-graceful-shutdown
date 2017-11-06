@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/sebhildebrandt/http-graceful-shutdown",
   "dependencies": {
-    "debug": "^3.0.1"
+    "debug": "^3.1.0"
   },
   "engineStrict": true,
   "engines": {

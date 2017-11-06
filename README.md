@@ -100,6 +100,7 @@ set DEBUG=http-graeceful-shutdown
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
+| 2.0.5          | 2017-11-06     | updated dependencies, modifications gitignore, added docs |
 | 2.0.4          | 2017-09-21     | updated dependencies, modifications gitignore |
 | 2.0.3          | 2017-06-18     | updated dependencies |
 | 2.0.2          | 2017-05-27     | fixed return value 0 |
