@@ -18,7 +18,7 @@ $ npm install http-graceful-shutdown
 
 ### Basic Usage
 
-```
+```js
 var gracefulShutdown = require('http-graceful-shutdown');
 ...
 server = app.listen(...);
@@ -35,7 +35,7 @@ You can pass an options-object to specify your specific options for the graceful
 
 The following example uses specifies all possible options (using more or less the default settings):
 
-```
+```js
 const gracefulShutdown = require('http-graceful-shutdown');
 ...
 server = app.listen(...);
@@ -100,6 +100,7 @@ set DEBUG=http-graeceful-shutdown
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
+| 2.0.6          | 2017-11-06     | updated docs, code cleanup |
 | 2.0.5          | 2017-11-06     | updated dependencies, modifications gitignore, added docs |
 | 2.0.4          | 2017-09-21     | updated dependencies, modifications gitignore |
 | 2.0.3          | 2017-06-18     | updated dependencies |
