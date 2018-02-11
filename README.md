@@ -100,6 +100,7 @@ set DEBUG=http-graeceful-shutdown
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
+| 2.1.0          | 2018-02-11     | bug fixing onShutdown method was called before `server.close`  |
 | 2.0.6          | 2017-11-06     | updated docs, code cleanup |
 | 2.0.5          | 2017-11-06     | updated dependencies, modifications gitignore, added docs |
 | 2.0.4          | 2017-09-21     | updated dependencies, modifications gitignore |
@@ -127,11 +128,16 @@ Sebastian Hildebrandt, [+innovations](http://www.plus-innovations.com)
 
 Written by Sebastian Hildebrandt [sebhildebrandt](https://github.com/sebhildebrandt)
 
+#### Contributers
+
+- Deepak Bhattarai [bring2dip](https://github.com/bring2dip)
+
+
 ## License [![MIT license][license-img]][license-url]
 
 >The [`MIT`][license-url] License (MIT)
 >
->Copyright &copy; 2015-2017 Sebastian Hildebrandt, [+innovations](http://www.plus-innovations.com).
+>Copyright &copy; 2015-2018 Sebastian Hildebrandt, [+innovations](http://www.plus-innovations.com).
 >
 >Permission is hereby granted, free of charge, to any person obtaining a copy
 >of this software and associated documentation files (the "Software"), to deal
