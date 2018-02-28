@@ -100,6 +100,7 @@ set DEBUG=http-graeceful-shutdown
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
+| 2.1.1          | 2018-02-28     | extended `isFunction` to support e.g. AsyncFunctions  |
 | 2.1.0          | 2018-02-11     | bug fixing onShutdown method was called before `server.close`  |
 | 2.0.6          | 2017-11-06     | updated docs, code cleanup |
 | 2.0.5          | 2017-11-06     | updated dependencies, modifications gitignore, added docs |
@@ -131,6 +132,7 @@ Written by Sebastian Hildebrandt [sebhildebrandt](https://github.com/sebhildebra
 #### Contributers
 
 - Deepak Bhattarai [bring2dip](https://github.com/bring2dip)
+- Shen [shenfe](https://github.com/shenfe)
 
 
 ## License [![MIT license][license-img]][license-url]
