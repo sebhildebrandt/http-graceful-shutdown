@@ -5,8 +5,14 @@ Gracefully shuts down node http server - can be used with [express][express-url]
   [![NPM Version][npm-image]][npm-url]
   [![NPM Downloads][downloads-image]][downloads-url]
   [![Git Issues][issues-img]][issues-url]
+  [![Closed Issues][closed-issues-img]][closed-issues-url]
   [![deps status][daviddm-img]][daviddm-url]
+  [![Code Quality: Javascript][lgtm-badge]][lgtm-badge-url]
+  [![Total alerts][lgtm-alerts]][lgtm-alerts-url]
+  [![Caretaker][caretaker-image]][caretaker-url]
   [![MIT license][license-img]][license-url]
+
+
 
 ## Quick Start
 
@@ -100,6 +106,7 @@ set DEBUG=http-graeceful-shutdown
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
+| 2.1.2          | 2018-11-03     | updated dependencies (version bump), updated docs |
 | 2.1.1          | 2018-02-28     | extended `isFunction` to support e.g. AsyncFunctions  |
 | 2.1.0          | 2018-02-11     | bug fixing onShutdown method was called before `server.close`  |
 | 2.0.6          | 2017-11-06     | updated docs, code cleanup |
@@ -168,6 +175,14 @@ Written by Sebastian Hildebrandt [sebhildebrandt](https://github.com/sebhildebra
 [license-img]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
 [npmjs-license]: https://img.shields.io/npm/l/http-graceful-shutdown.svg?style=flat-square
 
+[lgtm-badge]: https://img.shields.io/lgtm/grade/javascript/g/sebhildebrandt/http-graceful-shutdown.svg?style=flat-square
+[lgtm-badge-url]: https://lgtm.com/projects/g/sebhildebrandt/http-graceful-shutdown/context:javascript
+[lgtm-alerts]: https://img.shields.io/lgtm/alerts/g/sebhildebrandt/http-graceful-shutdown.svg?style=flat-square
+[lgtm-alerts-url]: https://lgtm.com/projects/g/sebhildebrandt/http-graceful-shutdown/alerts
+
+[caretaker-url]: https://github.com/sebhildebrandt
+[caretaker-image]: https://img.shields.io/badge/caretaker-sebhildebrandt-blue.svg?style=flat-square
+
 [express-url]: https://github.com/strongloop/expressjs.com
 [koa-url]: https://github.com/koajs/koa
 [http-url]: https://nodejs.org/api/http.html
@@ -178,3 +193,5 @@ Written by Sebastian Hildebrandt [sebhildebrandt](https://github.com/sebhildebra
 
 [issues-img]: https://img.shields.io/github/issues/sebhildebrandt/http-graceful-shutdown.svg?style=flat-square
 [issues-url]: https://github.com/sebhildebrandt/http-graceful-shutdown/issues
+[closed-issues-img]: https://img.shields.io/github/issues-closed-raw/sebhildebrandt/http-graceful-shutdown.svg?style=flat-square
+[closed-issues-url]: https://github.com/sebhildebrandt/http-graceful-shutdown/issues?q=is%3Aissue+is%3Aclosed
