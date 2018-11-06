@@ -1,6 +1,6 @@
 # http-graceful-shutdown
 
-Gracefully shuts down node http server - can be used with [express][express-url], [koa][koa-url], native node [http][http-url], ...
+Gracefully shuts down [node.js][nodejs-url] http server.
 
   [![NPM Version][npm-image]][npm-url]
   [![NPM Downloads][downloads-image]][downloads-url]
@@ -12,7 +12,10 @@ Gracefully shuts down node http server - can be used with [express][express-url]
   [![Caretaker][caretaker-image]][caretaker-url]
   [![MIT license][license-img]][license-url]
 
-
+- can be used with [express][express-url], [koa][koa-url], native node [http][http-url], ...
+- simple to use
+- configurable to your needs
+- add your own cleanup function
 
 ## Quick Start
 
@@ -39,7 +42,7 @@ gracefulShutdown(server);
 
 You can pass an options-object to specify your specific options for the graceful shutdown
 
-The following example uses specifies all possible options (using more or less the default settings):
+The following example uses all possible options (using more or less the default settings):
 
 ```js
 const gracefulShutdown = require('http-graceful-shutdown');
@@ -47,7 +50,8 @@ const gracefulShutdown = require('http-graceful-shutdown');
 server = app.listen(...);
 ...
 
-// your personal cleanup function - this one takes one second to complete
+// your personal cleanup function - must return a promise
+// this one takes one second to complete
 function cleanup() {
   return new Promise((resolve) => {
   	console.log('... in cleanup')
@@ -106,6 +110,7 @@ set DEBUG=http-graeceful-shutdown
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
+| 2.1.3          | 2018-11-06     | updated docs |
 | 2.1.2          | 2018-11-03     | updated dependencies (version bump), updated docs |
 | 2.1.1          | 2018-02-28     | extended `isFunction` to support e.g. AsyncFunctions  |
 | 2.1.0          | 2018-02-11     | bug fixing onShutdown method was called before `server.close`  |
@@ -183,6 +188,7 @@ Written by Sebastian Hildebrandt [sebhildebrandt](https://github.com/sebhildebra
 [caretaker-url]: https://github.com/sebhildebrandt
 [caretaker-image]: https://img.shields.io/badge/caretaker-sebhildebrandt-blue.svg?style=flat-square
 
+[nodejs-url]: https://nodejs.org/en/
 [express-url]: https://github.com/strongloop/expressjs.com
 [koa-url]: https://github.com/koajs/koa
 [http-url]: https://nodejs.org/api/http.html
