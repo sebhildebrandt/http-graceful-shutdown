@@ -52,8 +52,9 @@ server = app.listen(...);
 
 // your personal cleanup function - must return a promise
 // this one takes one second to complete
-function cleanup() {
+function cleanup(signal) {
   return new Promise((resolve) => {
+	console.log('... called signal: ' signal);
   	console.log('... in cleanup')
   	setTimeout(function() {
   		console.log('... cleanup finished');
@@ -88,8 +89,8 @@ gracefulShutdown(server,
 | signals | 'SIGINT SIGTERM' | define the signals, that should be handled (separated by SPACE) |
 | timeout | 30000 | timeout till forced shutdown (in milli seconds) |
 | development | false | if set to true, no graceful shutdown is proceeded to speed up dev-process |
-| onShutdown | - | place your (not time consuming) callback function, that will handle your additional cleanup things. Needs to return a promise |
-| finally | - | here you can place a small (not time consuming) function, that will be handled at the end of the shutdown (not in dev-mode) |
+| onShutdown | - | place your (not time consuming) callback function, that will<br>handle your additional cleanup things. Needs to return a promise.<br><br>If you add an input parameter to your cleanup function (optional),<br>the signal type that caused the shutdown is passed to your<br>cleanup function - example. |
+| finally | - | here you can place a small (not time consuming) function, that will<br>be handled at the end of the shutdown (not in dev-mode) |
 
 ### Debug
 
@@ -110,6 +111,7 @@ set DEBUG=http-graeceful-shutdown
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
+| 2.2.0          | 2018-11-19     | added (optional) signal type to shutdown function - see example |
 | 2.1.3          | 2018-11-06     | updated docs |
 | 2.1.2          | 2018-11-03     | updated dependencies (version bump), updated docs |
 | 2.1.1          | 2018-02-28     | extended `isFunction` to support e.g. AsyncFunctions  |
