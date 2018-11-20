@@ -50,8 +50,11 @@ const gracefulShutdown = require('http-graceful-shutdown');
 server = app.listen(...);
 ...
 
-// your personal cleanup function - must return a promise
-// this one takes one second to complete
+// your personal cleanup function 
+// - must return a promise
+// - the input parameter is optional (only needed if you want to 
+//   access the signal type inside this function)
+// - this function here in this example takes one second to complete
 function cleanup(signal) {
   return new Promise((resolve) => {
 	console.log('... called signal: ' signal);
@@ -111,6 +114,7 @@ set DEBUG=http-graeceful-shutdown
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
+| 2.2.1          | 2018-11-20     | updated docs |
 | 2.2.0          | 2018-11-19     | added (optional) signal type to shutdown function - see example |
 | 2.1.3          | 2018-11-06     | updated docs |
 | 2.1.2          | 2018-11-03     | updated dependencies (version bump), updated docs |
