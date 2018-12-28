@@ -30,6 +30,7 @@ $ npm install http-graceful-shutdown
 ```js
 var gracefulShutdown = require('http-graceful-shutdown');
 ...
+// app: can be http, https, express, koa
 server = app.listen(...);
 ...
 
@@ -47,12 +48,13 @@ The following example uses all possible options (using more or less the default 
 ```js
 const gracefulShutdown = require('http-graceful-shutdown');
 ...
+// app: can be http, https, express, koa
 server = app.listen(...);
 ...
 
-// your personal cleanup function 
+// your personal cleanup function
 // - must return a promise
-// - the input parameter is optional (only needed if you want to 
+// - the input parameter is optional (only needed if you want to
 //   access the signal type inside this function)
 // - this function here in this example takes one second to complete
 function cleanup(signal) {
@@ -62,7 +64,7 @@ function cleanup(signal) {
   	setTimeout(function() {
   		console.log('... cleanup finished');
   		resolve();
-  	}, 1000)       
+  	}, 1000)
   });
 }
 
@@ -114,6 +116,7 @@ set DEBUG=http-graeceful-shutdown
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
+| 2.2.2          | 2018-12-28     | updated docs, keywords |
 | 2.2.1          | 2018-11-20     | updated docs |
 | 2.2.0          | 2018-11-19     | added (optional) signal type to shutdown function - see example |
 | 2.1.3          | 2018-11-06     | updated docs |
