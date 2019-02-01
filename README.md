@@ -103,19 +103,20 @@ If you want to get debug notes ([debug][debug-url] is a dependency of this modul
  debugging:
 
 ```
-export DEBUG=http-graeceful-shutdown
+export DEBUG=http-graceful-shutdown
 ```
 
 OR on Windows:
 
 ```
-set DEBUG=http-graeceful-shutdown
+set DEBUG=http-graceful-shutdown
 ```
 
 ## Version history
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
+| 2.2.3          | 2019-02-01     | updated docs, debug |
 | 2.2.2          | 2018-12-28     | updated docs, keywords |
 | 2.2.1          | 2018-11-20     | updated docs |
 | 2.2.0          | 2018-11-19     | added (optional) signal type to shutdown function - see example |
@@ -160,7 +161,7 @@ Written by Sebastian Hildebrandt [sebhildebrandt](https://github.com/sebhildebra
 
 >The [`MIT`][license-url] License (MIT)
 >
->Copyright &copy; 2015-2018 Sebastian Hildebrandt, [+innovations](http://www.plus-innovations.com).
+>Copyright &copy; 2015-2019 Sebastian Hildebrandt, [+innovations](http://www.plus-innovations.com).
 >
 >Permission is hereby granted, free of charge, to any person obtaining a copy
 >of this software and associated documentation files (the "Software"), to deal
