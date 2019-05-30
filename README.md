@@ -116,6 +116,7 @@ set DEBUG=http-graceful-shutdown
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
+| 2.3.0          | 2019-05-30     | added manual shutdown (for tests) see docs below |
 | 2.2.3          | 2019-02-01     | updated docs, debug |
 | 2.2.2          | 2018-12-28     | updated docs, keywords |
 | 2.2.1          | 2018-11-20     | updated docs |
@@ -137,6 +138,21 @@ set DEBUG=http-graceful-shutdown
 | 1.0.3          | 2015-09-15     | updated docs |
 | 1.0.1          | 2015-09-14     | updated docs, reformated code |
 | 1.0.0          | 2015-09-14     | initial release |
+
+## manual shutdown
+
+You can now trigger gracefullShutdown programatically (e.g. for tests) like so:
+
+```js
+let shutdown
+beforeAll(() => {
+  shutdown = gracefulShutdown(...)
+})
+
+afterAll(async () => {
+  await shutdown()
+})
+```
 
 
 ## Comments

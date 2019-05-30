@@ -3,6 +3,7 @@
   "version": "2.2.3",
   "description": "gracefully shuts downs http server",
   "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -30,7 +31,7 @@
   },
   "homepage": "https://github.com/sebhildebrandt/http-graceful-shutdown",
   "dependencies": {
-    "debug": "^4.1.0"
+    "debug": "^4.1.1"
   },
   "engineStrict": true,
   "engines": {
