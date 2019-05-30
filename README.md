@@ -139,9 +139,9 @@ set DEBUG=http-graceful-shutdown
 | 1.0.1          | 2015-09-14     | updated docs, reformated code |
 | 1.0.0          | 2015-09-14     | initial release |
 
-## manual shutdown
+## Trigger shutdown manually
 
-You can now trigger gracefullShutdown programatically (e.g. for tests) like so:
+You can now trigger gracefulShutdown programatically (e.g. for tests) like so:
 
 ```js
 let shutdown
