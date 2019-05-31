@@ -81,6 +81,20 @@ gracefulShutdown(server,
 	}
 );
 ```
+### Trigger shutdown manually
+
+You can now trigger gracefulShutdown programatically (e.g. for tests) like so:
+
+```js
+let shutdown
+beforeAll(() => {
+  shutdown = gracefulShutdown(...)
+})
+
+afterAll(async () => {
+  await shutdown()
+})
+```
 
 ### Major (breaking) Changes - Version 2
 
@@ -116,6 +130,7 @@ set DEBUG=http-graceful-shutdown
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
+| 2.3.1          | 2019-05-31     | updated docs, added typescript typings |
 | 2.3.0          | 2019-05-30     | added manual shutdown (for tests) see docs below |
 | 2.2.3          | 2019-02-01     | updated docs, debug |
 | 2.2.2          | 2018-12-28     | updated docs, keywords |
@@ -139,20 +154,6 @@ set DEBUG=http-graceful-shutdown
 | 1.0.1          | 2015-09-14     | updated docs, reformated code |
 | 1.0.0          | 2015-09-14     | initial release |
 
-## Trigger shutdown manually
-
-You can now trigger gracefulShutdown programatically (e.g. for tests) like so:
-
-```js
-let shutdown
-beforeAll(() => {
-  shutdown = gracefulShutdown(...)
-})
-
-afterAll(async () => {
-  await shutdown()
-})
-```
 
 
 ## Comments
