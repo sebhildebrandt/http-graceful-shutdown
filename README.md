@@ -130,6 +130,7 @@ set DEBUG=http-graceful-shutdown
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
+| 2.3.2          | 2019-06-14     | typescript typings fix |
 | 2.3.1          | 2019-05-31     | updated docs, added typescript typings |
 | 2.3.0          | 2019-05-30     | added manual shutdown (for tests) see docs below |
 | 2.2.3          | 2019-02-01     | updated docs, debug |
@@ -154,8 +155,6 @@ set DEBUG=http-graceful-shutdown
 | 1.0.1          | 2015-09-14     | updated docs, reformated code |
 | 1.0.0          | 2015-09-14     | initial release |
 
-
-
 ## Comments
 
 If you have ideas or comments, please do not hesitate to contact me.
@@ -172,7 +171,7 @@ Written by Sebastian Hildebrandt [sebhildebrandt](https://github.com/sebhildebra
 
 - Deepak Bhattarai [bring2dip](https://github.com/bring2dip)
 - Shen [shenfe](https://github.com/shenfe)
-
+- Jeff Hansen [jeffijoe](https://github.com/jeffijoe)
 
 ## License [![MIT license][license-img]][license-url]
 
