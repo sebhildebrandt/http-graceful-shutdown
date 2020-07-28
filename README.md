@@ -59,7 +59,7 @@ server = app.listen(...);
 // - this function here in this example takes one second to complete
 function cleanup(signal) {
   return new Promise((resolve) => {
-	console.log('... called signal: ' signal);
+	console.log('... called signal: ' + signal);
   	console.log('... in cleanup')
   	setTimeout(function() {
   		console.log('... cleanup finished');
