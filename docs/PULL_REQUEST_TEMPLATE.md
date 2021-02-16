@@ -4,10 +4,7 @@ Fixes #
 
 #### Changes proposed:
 
-* [ ] Fix
-* [ ] Add
-* [ ] Remove
-* [ ] Update
+Specify weather this is a fix / enhancement / update
 
 #### Description (what is this PR about)
 

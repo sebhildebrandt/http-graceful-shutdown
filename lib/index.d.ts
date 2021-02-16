@@ -1,4 +1,4 @@
-// Type definitions for http-graceful-shutdown 2.2
+// Type definitions for http-graceful-shutdown 2.4
 // Project: https://github.com/sebhildebrandt/http-graceful-shutdown
 // Definitions by: sebhildebrandt <https://github.com/sebhildebrandt>
 
@@ -11,6 +11,7 @@ declare namespace GracefulShutdown {
     signals?: string;
     timeout?: number;
     development?: boolean;
+    forceExit?: boolean;
     onShutdown?: (signal: string) => Promise<void>;
     finally?: () => void;
   }

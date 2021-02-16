@@ -28,7 +28,7 @@ $ npm install http-graceful-shutdown
 ### Basic Usage
 
 ```js
-var gracefulShutdown = require('http-graceful-shutdown');
+const gracefulShutdown = require('http-graceful-shutdown');
 ...
 // app: can be http, https, express, koa
 server = app.listen(...);
@@ -59,7 +59,7 @@ server = app.listen(...);
 // - this function here in this example takes one second to complete
 function cleanup(signal) {
   return new Promise((resolve) => {
-	console.log('... called signal: ' signal);
+	console.log('... called signal: ' + signal);
   	console.log('... in cleanup')
   	setTimeout(function() {
   		console.log('... cleanup finished');
@@ -96,6 +96,23 @@ afterAll(async () => {
 })
 ```
 
+### no forced process.exit
+
+You can now suppress forcefull process.exit (just let the event loop clear):
+
+```js
+const gracefulShutdown = require('http-graceful-shutdown');
+...
+// app: can be http, https, express, koa
+server = app.listen(...);
+...
+
+// this enables the graceful shutdown
+gracefulShutdown(server, {
+  forceExit: false
+});
+```
+
 ### Major (breaking) Changes - Version 2
 
 - **renamed** option: `callback`: now to `finally`: place your (not time consuming) function, that will be handled at the end of the shutdown (not in dev-mode)
@@ -109,6 +126,7 @@ afterAll(async () => {
 | timeout | 30000 | timeout till forced shutdown (in milli seconds) |
 | development | false | if set to true, no graceful shutdown is proceeded to speed up dev-process |
 | onShutdown | - | place your (not time consuming) callback function, that will<br>handle your additional cleanup things. Needs to return a promise.<br><br>If you add an input parameter to your cleanup function (optional),<br>the signal type that caused the shutdown is passed to your<br>cleanup function - example. |
+| forceExit | true | force process.exit - otherwise just let event loop clear |
 | finally | - | here you can place a small (not time consuming) function, that will<br>be handled at the end of the shutdown (not in dev-mode) |
 
 ### Debug
@@ -130,6 +148,7 @@ set DEBUG=http-graceful-shutdown
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
+| 2.4.0          | 2021-02-15     | added forceExit option (defaults to true) |
 | 2.3.2          | 2019-06-14     | typescript typings fix |
 | 2.3.1          | 2019-05-31     | updated docs, added typescript typings |
 | 2.3.0          | 2019-05-30     | added manual shutdown (for tests) see docs below |
@@ -177,7 +196,7 @@ Written by Sebastian Hildebrandt [sebhildebrandt](https://github.com/sebhildebra
 
 >The [`MIT`][license-url] License (MIT)
 >
->Copyright &copy; 2015-2019 Sebastian Hildebrandt, [+innovations](http://www.plus-innovations.com).
+>Copyright &copy; 2015-2021 Sebastian Hildebrandt, [+innovations](http://www.plus-innovations.com).
 >
 >Permission is hereby granted, free of charge, to any person obtaining a copy
 >of this software and associated documentation files (the "Software"), to deal
