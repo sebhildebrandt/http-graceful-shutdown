@@ -185,9 +185,9 @@ afterAll(async () => {
 })
 ```
 
-### Do not force process.exit
+### Do not force process.exit()
 
-You can now suppress forcefull process.exit (just let the event loop clear):
+With the forceExit option, you can define how your node server process ends: when setting `forceExit` to `false`, you just let the event loop clear and then the proccess end automaticly:
 
 ```js
 const gracefulShutdown = require('http-graceful-shutdown');
@@ -196,11 +196,16 @@ const gracefulShutdown = require('http-graceful-shutdown');
 server = app.listen(...);
 ...
 
-// this enables the graceful shutdown
+// enable graceful shutdown with options:
+// this option lets the event loop clear to end your node server
+// no explicit process.exit() will be triggered.
+
 gracefulShutdown(server, {
   forceExit: false
 });
 ```
+
+If you want an explicit process.exit() at the end, set `forceExit` to `true` (which is the default).
 
 ### Debug
 
