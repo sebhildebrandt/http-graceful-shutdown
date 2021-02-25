@@ -1,12 +1,11 @@
 # http-graceful-shutdown
 
 ```
-  _     _   _                                       __       _         _           _      _
- | |__ | |_| |_ _ __       __ _ _ __ __ _  ___ ___ / _|_   _| |    ___| |__  _   _| |_ __| | _____      ___ __
- | '_ \| __| __| '_ \ ___ / _` | '__/ _` |/ __/ _ \ |_| | | | |___/ __| '_ \| | | | __/ _` |/ _ \ \ /\ / / '_ \
- | | | | |_| |_| |_) |___| (_| | | | (_| | (_|  __/  _| |_| | |___\__ \ | | | |_| | || (_| | (_) \ V  V /| | | |
- |_| |_|\__|\__| .__/     \__, |_|  \__,_|\___\___|_|  \__,_|_|   |___/_| |_|\__,_|\__\__,_|\___/ \_/\_/ |_| |_|
-               |_|        |___/
+  _   _   _                                  __      _        _        _      _
+ | |_| |_| |_ _ __ ___ __ _ _ _ __ _ __ ___ / _|_  _| |___ __| |_ _  _| |_ __| |_____ __ ___ _
+ | ' \  _|  _| '_ \___/ _` | '_/ _` / _/ -_)  _| || | |___(_-< ' \ || |  _/ _` / _ \ V  V / ' \
+ |_||_\__|\__| .__/   \__, |_| \__,_\__\___|_|  \_,_|_|   /__/_||_\_,_|\__\__,_\___/\_/\_/|_||_|
+             |_|      |___/
 ```
 
 Gracefully shuts down [node.js][nodejs-url] http server.
@@ -74,7 +73,7 @@ gracefulShutdown(server);
                          │
            (1)       (2) v                                                 NODE SERVER (HTTP, Express, koa, fastity, ...)
     ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇
-           │             │ ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ │ <── shutdown process
+           │             │ ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ │ <─ shutdown procedure
            │             │ shutdown initiated      │ │                                            │
            │             │                         │ │    (7) shutdown function    (8) finally fn │
            │             │ ▄▄                      │ │ ▄▄ ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄▄▄▄▄▄▄▄ │
@@ -93,8 +92,8 @@ Request │  V Resp │                                V Resp.     │
 ────────┴─────────┴────────────────────────────────────────────┴─────────────────────────────────────────────────────────
 ```
 
-1. usually your http server replies to client requests and sends responses
-2. if your server receives a termination signal (e.g. SIGINT - Ctrl-C), http-graceful-shutdown starts the shutdown process
+1. usually your NODE http server (the black bar in the middle) replies to client requests and sends responses
+2. if your server receives a termination signal (e.g. SIGINT - Ctrl-C) from its parent, http-graceful-shutdown starts the shutdown procedure
 3. first all idle / empty connections are closed and destroyed.
 4. http-graceful-shutdown will block any new requests
 5. If possible, http-graceful-shutdown communicates to the clients that the server is about to close (connection close header)
@@ -218,9 +217,9 @@ OR on Windows:
 set DEBUG=http-graceful-shutdown
 ```
 
-### Examples
+## Examples
 
-You can find examples how to use http-graceful-shutdown with Express, Koa, http, http2, fastify in the `examples` directory.
+You can find examples how to use `http-graceful-shutdown` with Express, Koa, http, http2, fastify in the `examples` directory.
 To run the examples, be sure to install debug and express, koa or fastify.
 
 ```
