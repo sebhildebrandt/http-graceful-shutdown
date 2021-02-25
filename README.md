@@ -1,5 +1,14 @@
 # http-graceful-shutdown
 
+```
+  _     _   _                                       __       _         _           _      _
+ | |__ | |_| |_ _ __       __ _ _ __ __ _  ___ ___ / _|_   _| |    ___| |__  _   _| |_ __| | _____      ___ __
+ | '_ \| __| __| '_ \ ___ / _` | '__/ _` |/ __/ _ \ |_| | | | |___/ __| '_ \| | | | __/ _` |/ _ \ \ /\ / / '_ \
+ | | | | |_| |_| |_) |___| (_| | | | (_| | (_|  __/  _| |_| | |___\__ \ | | | |_| | || (_| | (_) \ V  V /| | | |
+ |_| |_|\__|\__| .__/     \__, |_|  \__,_|\___\___|_|  \__,_|_|   |___/_| |_|\__,_|\__\__,_|\___/ \_/\_/ |_| |_|
+               |_|        |___/
+```
+
 Gracefully shuts down [node.js][nodejs-url] http server.
 
   [![NPM Version][npm-image]][npm-url]
@@ -12,10 +21,25 @@ Gracefully shuts down [node.js][nodejs-url] http server.
   [![Caretaker][caretaker-image]][caretaker-url]
   [![MIT license][license-img]][license-url]
 
-- can be used with [express][express-url], [koa][koa-url], native node [http][http-url], ...
+**Version 3.0** just released. This version is fully backwards compatible to version 2.x but adds much better handling under the hood.
+
+- can be used with [express][express-url], [koa][koa-url], [fastify][fastify-url], native node [http][http-url], [http2][http2-url] ... see examples
 - simple to use
 - configurable to your needs
 - add your own cleanup function
+
+### Features
+
+`http-graceful-shutdown` manages a secure and save shutdown of your http server application:
+
+- tracks all connections
+- stops the server from accepting new connections on shutdown
+- graceful communication to all connected clients of server intention to shutdown
+- immediately destroys all sockets without an attached HTTP request
+- properly handles all HTTP and HTTPS connections
+- possibility to define cleanup functions (e.g. closing DB connections)
+- choose between shutting down by function call or triggered by SIGINT, SIGTERM, ...
+- choose between final forcefull process termination node.js (process.exit) or clearing event loop (options).
 
 ## Quick Start
 
@@ -30,7 +54,7 @@ $ npm install http-graceful-shutdown
 ```js
 const gracefulShutdown = require('http-graceful-shutdown');
 ...
-// app: can be http, https, express, koa
+// app: can be http, https, express, koa, fastity, ...
 server = app.listen(...);
 ...
 
@@ -38,17 +62,77 @@ server = app.listen(...);
 gracefulShutdown(server);
 ```
 
+## Explanation
 
-### Advanced Options
+### Functionality
+
+```
+                                                                    PARENT Process (e.g. nodemon, shell, kubernetes, ...)
+─────────────────────────┬───────────────────────────────────────────────────────────────────────────────────────────────
+                         │ Signal (SIGINT, SIGTERM, ...)
+                         │
+                         │
+           (1)       (2) v                                                 NODE SERVER (HTTP, Express, koa, fastity, ...)
+    ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇
+           │             │ ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ │ <── shutdown process
+           │             │ shutdown initiated      │ │                                            │
+           │             │                         │ │    (7) shutdown function    (8) finally fn │
+           │             │ ▄▄                      │ │ ▄▄ ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄▄▄▄▄▄▄▄ │
+           │             └ (3) close idle sockets  │ └ (6) destroy remaining sockets              │
+           │                                       │                                              │ (9)
+     serve │      serving req. (open connection)   │          (4)                                 └ SERVER terminated
+        ▄▄▄│      ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄┤           ^ blocked
+        ^  │      ^  last request before           │           │
+        │  │      │  receiving shutdown signal     │           │
+        │  │      │                                │           │
+        │  │      │                                │           │
+        │  │      │                                │           │
+        │  │      │ Long request                   │           │
+Request │  V Resp │                                V Resp.     │
+        │         │                                            │                                                   CLIENT
+────────┴─────────┴────────────────────────────────────────────┴─────────────────────────────────────────────────────────
+```
+
+1. usually your http server replies to client requests and sends responses
+2. if your server receives a termination signal (e.g. SIGINT - Ctrl-C), http-graceful-shutdown starts the shutdown process
+3. first all idle / empty connections are closed and destroyed.
+4. http-graceful-shutdown will block any new requests
+5. If possible, http-graceful-shutdown communicates to the clients that the server is about to close (connection close header)
+6. http-graceful-shutdown now tries to wait till all sockets are finished, then destroys the all remaining sockets
+7. now it is time to run the "onShutdown" (async) function (if such a function is passed to the options object)
+8. as soon as this onShutdown function has ended, the "finally" (sync) function is executed (if passed to the options)
+9. now the event loop cleared up OR process.exit() is triggered (can be defined in the options) and the server process ends.
+
+## Options
+
+| option         | default | Comments |
+| -------------- | --------------------- | ---------------------- |
+| timeout | 30000 | timeout till forced shutdown (in milli seconds) |
+| signals | 'SIGINT SIGTERM' | define the signals, that should be handled (separated by SPACE) |
+| development | false | if set to true, no graceful shutdown is proceeded to speed up dev-process |
+| onShutdown | - | not time consuming callback function. Needs to return a promise. |
+| forceExit | true | force process.exit - otherwise just let event loop clear |
+| finally | - | small, not time consuming function, that will<br>be handled at the end of the shutdown (not in dev-mode) |
+
+### Option Explanation
+
+- **timeout:** You can define the maximum time that the shutdown process may take (timeout option). If after this time, connections are still open or the shutdown process is still running, then the remaining connections will be forcibly closed and the server process is terminated.
+- **signals** Here you can define which signals can trigger the shutdown process (SIGINT, SIGTERM, SIGKILL, SIGHUP, SIGUSR2, ...)
+- **development** If true, the shutdown process is much shorter, because it just terminates the server, ignoring open connections, shutdown function, finally function ...
+- **onShutdown** place your (not time consuming) callback function, that will handle your additional cleanup things (e.g. close DB connections). Needs to return a promise. (async). If you add an input parameter to your cleanup function (optional), the SIGNAL type that caused the shutdown is passed to your cleanup function. See example.
+- **finally** here you can place a small (not time consuming) function, that will be handled at the end of the shutdown e.g. for logging of shutdown. (sync)
+- **forceExit** force process.exit() at the end oof the shutdown process - otherwise just let event loop clear
+
+### Advanced Options Example
 
 You can pass an options-object to specify your specific options for the graceful shutdown
 
-The following example uses all possible options (using more or less the default settings):
+The following example uses all possible options:
 
 ```js
 const gracefulShutdown = require('http-graceful-shutdown');
 ...
-// app: can be http, https, express, koa
+// app: can be http, https, express, koa, fastity, ...
 server = app.listen(...);
 ...
 
@@ -57,28 +141,34 @@ server = app.listen(...);
 // - the input parameter is optional (only needed if you want to
 //   access the signal type inside this function)
 // - this function here in this example takes one second to complete
-function cleanup(signal) {
+function shutdownFunction(signal) {
   return new Promise((resolve) => {
-	console.log('... called signal: ' + signal);
-  	console.log('... in cleanup')
-  	setTimeout(function() {
-  		console.log('... cleanup finished');
-  		resolve();
-  	}, 1000)
+    console.log('... called signal: ' + signal);
+    console.log('... in cleanup')
+    setTimeout(function() {
+      console.log('... cleanup finished');
+      resolve();
+    }, 1000)
   });
+}
+
+// finally function
+// -- sync function
+// -- should be very short (not time consuming)
+function() finalFunction {
+  console.log('Server gracefulls shutted down.....')
 }
 
 // this enables the graceful shutdown with advanced options
 gracefulShutdown(server,
-	{
-		signals: 'SIGINT SIGTERM',
-		timeout: 30000,
-		development: false,
-		onShutdown: cleanup,
-		finally: function() {
-			console.log('Server gracefulls shutted down.....')
-		}
-	}
+  {
+    signals: 'SIGINT SIGTERM',
+    timeout: 10000,                  // timeout: 10 secs
+    development: false,              // not in dev mode
+    forceExit: true,                 // triggers process.exit() at the end of shutdown process
+    onShutdown: shutdownFunction,    // shutdown function (async) - e.g. for cleanup DB, ...
+    finally: finalFunction           // finally function (sync) - e.g. for logging
+  }
 );
 ```
 ### Trigger shutdown manually
@@ -96,14 +186,14 @@ afterAll(async () => {
 })
 ```
 
-### no forced process.exit
+### Do not force process.exit
 
 You can now suppress forcefull process.exit (just let the event loop clear):
 
 ```js
 const gracefulShutdown = require('http-graceful-shutdown');
 ...
-// app: can be http, https, express, koa
+// app: can be http, https, express, koa, fastity, ...
 server = app.listen(...);
 ...
 
@@ -112,22 +202,6 @@ gracefulShutdown(server, {
   forceExit: false
 });
 ```
-
-### Major (breaking) Changes - Version 2
-
-- **renamed** option: `callback`: now to `finally`: place your (not time consuming) function, that will be handled at the end of the shutdown (not in dev-mode)
-- **new** option: `onShutdown`: place your function, that will handle your additional cleanup things. Needs to return a promise
-
-### Option Reference
-
-| option         | default | Comments |
-| -------------- | --------------------- | ---------------------- |
-| signals | 'SIGINT SIGTERM' | define the signals, that should be handled (separated by SPACE) |
-| timeout | 30000 | timeout till forced shutdown (in milli seconds) |
-| development | false | if set to true, no graceful shutdown is proceeded to speed up dev-process |
-| onShutdown | - | place your (not time consuming) callback function, that will<br>handle your additional cleanup things. Needs to return a promise.<br><br>If you add an input parameter to your cleanup function (optional),<br>the signal type that caused the shutdown is passed to your<br>cleanup function - example. |
-| forceExit | true | force process.exit - otherwise just let event loop clear |
-| finally | - | here you can place a small (not time consuming) function, that will<br>be handled at the end of the shutdown (not in dev-mode) |
 
 ### Debug
 
@@ -144,10 +218,19 @@ OR on Windows:
 set DEBUG=http-graceful-shutdown
 ```
 
+### Examples
+
+You can find examples how to use http-graceful-shutdown with Express, Koa, http, http2, fastify in the `examples` directory.
+To run the examples, be sure to install debug and express, koa or fastify.
+
+```
+npm install debug express koa fastify
+```
 ## Version history
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
+| 3.0.0          | 2021-02-25     | version 3.0 release |
 | 2.4.0          | 2021-02-15     | added forceExit option (defaults to true) |
 | 2.3.2          | 2019-06-14     | typescript typings fix |
 | 2.3.1          | 2019-05-31     | updated docs, added typescript typings |
@@ -236,7 +319,9 @@ Written by Sebastian Hildebrandt [sebhildebrandt](https://github.com/sebhildebra
 [nodejs-url]: https://nodejs.org/en/
 [express-url]: https://github.com/strongloop/expressjs.com
 [koa-url]: https://github.com/koajs/koa
+[fastify-url]: https://www.fastify.io
 [http-url]: https://nodejs.org/api/http.html
+[http2-url]: https://nodejs.org/api/http2.html
 [debug-url]: https://github.com/visionmedia/debug
 
 [daviddm-url]: https://david-dm.org/sebhildebrandt/http-graceful-shutdown
@@ -244,5 +329,5 @@ Written by Sebastian Hildebrandt [sebhildebrandt](https://github.com/sebhildebra
 
 [issues-img]: https://img.shields.io/github/issues/sebhildebrandt/http-graceful-shutdown.svg?style=flat-square
 [issues-url]: https://github.com/sebhildebrandt/http-graceful-shutdown/issues
-[closed-issues-img]: https://img.shields.io/github/issues-closed-raw/sebhildebrandt/http-graceful-shutdown.svg?style=flat-square
+[closed-issues-img]: https://img.shields.io/github/issues-closed-raw/sebhildebrandt/http-graceful-shutdown.svg?style=flat-square&color=brightgreen
 [closed-issues-url]: https://github.com/sebhildebrandt/http-graceful-shutdown/issues?q=is%3Aissue+is%3Aclosed
