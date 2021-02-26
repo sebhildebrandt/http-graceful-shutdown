@@ -234,6 +234,7 @@ npm install debug express koa fastify
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
+| 3.0.1          | 2021-02-26     | code cleanup |
 | 3.0.0          | 2021-02-25     | version 3.0 release |
 | 2.4.0          | 2021-02-15     | added forceExit option (defaults to true) |
 | 2.3.2          | 2019-06-14     | typescript typings fix |
