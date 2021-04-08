@@ -187,7 +187,7 @@ afterAll(async () => {
 
 ### Do not force process.exit()
 
-With the `forceExit` option, you can define how your node server process ends: when setting `forceExit` to `false`, you just let the event loop clear and then the proccess ends automaticly:
+With the `forceExit` option, you can define how your node server process ends: when setting `forceExit` to `false`, you just let the event loop clear and then the proccess ends automatically:
 
 ```js
 const gracefulShutdown = require('http-graceful-shutdown');
@@ -274,7 +274,7 @@ Sebastian Hildebrandt, [+innovations](http://www.plus-innovations.com)
 
 Written by Sebastian Hildebrandt [sebhildebrandt](https://github.com/sebhildebrandt)
 
-#### Contributers
+#### Contributors
 
 - Deepak Bhattarai [bring2dip](https://github.com/bring2dip)
 - Shen [shenfe](https://github.com/shenfe)
