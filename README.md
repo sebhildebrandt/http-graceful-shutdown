@@ -187,7 +187,7 @@ afterAll(async () => {
 
 ### Do not force process.exit()
 
-With the `forceExit` option, you can define how your node server process ends: when setting `forceExit` to `false`, you just let the event loop clear and then the proccess ends automaticly:
+With the `forceExit` option, you can define how your node server process ends: when setting `forceExit` to `false`, you just let the event loop clear and then the proccess ends automatically:
 
 ```js
 const gracefulShutdown = require('http-graceful-shutdown');
@@ -234,6 +234,7 @@ npm install debug express koa fastify
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
+| 3.0.2          | 2021-04-08     | updated docs |
 | 3.0.1          | 2021-02-26     | code cleanup |
 | 3.0.0          | 2021-02-25     | version 3.0 release |
 | 2.4.0          | 2021-02-15     | added forceExit option (defaults to true) |
@@ -274,7 +275,7 @@ Sebastian Hildebrandt, [+innovations](http://www.plus-innovations.com)
 
 Written by Sebastian Hildebrandt [sebhildebrandt](https://github.com/sebhildebrandt)
 
-#### Contributers
+#### Contributors
 
 - Deepak Bhattarai [bring2dip](https://github.com/bring2dip)
 - Shen [shenfe](https://github.com/shenfe)
