@@ -43,7 +43,7 @@ function cleanup(signal) {
 gracefulShutdown(server,
   {
     signals: 'SIGINT SIGTERM',
-    timeout: 5000,
+    timeout: 3000,
     development: false,
     onShutdown: cleanup,
     forceExit: true,
