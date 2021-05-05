@@ -24,7 +24,7 @@ gracefulShutdown(server,
     forceExit: false,             // do not perform process.exit()
     finally: function () {
       console.log()
-      console.log('Server gracefully shutted down.....')
+      console.log('Server gracefully shut down complete')
     }
   }
 );
