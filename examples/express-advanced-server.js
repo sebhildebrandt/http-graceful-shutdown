@@ -43,14 +43,14 @@ function cleanup(signal) {
 gracefulShutdown(server,
   {
     signals: 'SIGINT SIGTERM',
-    timeout: 0,
+    timeout: 3000,
     development: false,
     onShutdown: cleanup,
     forceExit: true,
     finally: function () {
       console.log()
       console.log('In "finally" function')
-      console.log('... Server gracefully shutted down.....')
+      console.log('... Server was gracefully shut down.....')
     }
   }
 );
