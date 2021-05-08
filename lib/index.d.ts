@@ -4,7 +4,10 @@
 
 /// <reference types="node" />
 
-declare function GracefulShutdown(server: any, options?: GracefulShutdown.Options): () => Promise<void>;
+declare function GracefulShutdown(
+  server: any,
+  options?: GracefulShutdown.Options
+): () => Promise<void>
 
 declare namespace GracefulShutdown {
   interface Options {
@@ -12,7 +15,8 @@ declare namespace GracefulShutdown {
     timeout?: number;
     development?: boolean;
     forceExit?: boolean;
-    onShutdown?: (signal: string) => Promise<void>;
+    preShutdown?: (signal?: string) => Promise<void>;
+    onShutdown?: (signal?: string) => Promise<void>;
     finally?: () => void;
   }
 }

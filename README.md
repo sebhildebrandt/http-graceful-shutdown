@@ -37,6 +37,7 @@ Gracefully shuts down [node.js][nodejs-url] http server.
 - immediately destroys all sockets without an attached HTTP request
 - properly handles all HTTP and HTTPS connections
 - possibility to define cleanup functions (e.g. closing DB connections)
+- preShutdown function if you need to have all HTTP sockets available and untouched
 - choose between shutting down by function call or triggered by SIGINT, SIGTERM, ...
 - choose between final forcefull process termination node.js (process.exit) or clearing event loop (options).
 
@@ -72,35 +73,38 @@ gracefulShutdown(server);
                          │
                          │
            (1)       (2) v                                                 NODE SERVER (HTTP, Express, koa, fastity, ...)
-    ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇
-           │             │ ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ │ <─ shutdown procedure
-           │             │ shutdown initiated      │ │                                            │
-           │             │                         │ │    (7) shutdown function    (8) finally fn │
-           │             │ ▄▄                      │ │ ▄▄ ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄▄▄▄▄▄▄▄ │
-           │             └ (3) close idle sockets  │ └ (6) destroy remaining sockets              │
-           │                                       │                                              │ (9)
-     serve │      serving req. (open connection)   │          (4)                                 └ SERVER terminated
-        ▄▄▄│      ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄┤           ^ blocked
-        ^  │      ^  last request before           │           │
-        │  │      │  receiving shutdown signal     │           │
-        │  │      │                                │           │
-        │  │      │                                │           │
-        │  │      │                                │           │
-        │  │      │ Long request                   │           │
-Request │  V Resp │                                V Resp.     │
-        │         │                                            │                                                   CLIENT
-────────┴─────────┴────────────────────────────────────────────┴─────────────────────────────────────────────────────────
+    ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇
+           │             │ ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ │ <─ shutdown procedure
+           │             │ shutdown initiated           │ │                                            │
+           │             │                              │ │                                            │
+           │             │                              │ │    (8) shutdown function    (9) finally fn │
+           │             │ ▄▄▄▄▄▄▄▄▄▄▄▄ ▄▄▄             │ │ ▄▄ ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄▄▄▄▄▄▄▄ │
+           │             └ (3)          (4) close       │ └ (7) destroy                                │
+           │               preShutdown  idle sockets    │   remaining sockets                          │
+           │                                            │                                              │ (10)
+     serve │      serving req. (open connection)        │          (5)                                 └ SERVER terminated
+        ▄▄▄│      ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄┤           ^ blocked
+        ^  │      ^  last request before                │           │
+        │  │      │  receiving shutdown signal          │           │
+        │  │      │                                     │           │
+        │  │      │                                     │           │
+        │  │      │                                     │           │
+        │  │      │ Long request                        │           │
+Request │  V Resp │                                     V Resp.     │
+        │         │                                                 │                                                   CLIENT
+────────┴─────────┴─────────────────────────────────────────────────┴─────────────────────────────────────────────────────────
 ```
 
 1. usually your NODE http server (the black bar in the middle) replies to client requests and sends responses
 2. if your server receives a termination signal (e.g. SIGINT - Ctrl-C) from its parent, http-graceful-shutdown starts the shutdown procedure
-3. first all idle / empty connections are closed and destroyed.
-4. http-graceful-shutdown will block any new requests
-5. If possible, http-graceful-shutdown communicates to the clients that the server is about to close (connection close header)
-6. http-graceful-shutdown now tries to wait till all sockets are finished, then destroys the all remaining sockets
-7. now it is time to run the "onShutdown" (async) function (if such a function is passed to the options object)
-8. as soon as this onShutdown function has ended, the "finally" (sync) function is executed (if passed to the options)
-9. now the event loop cleared up OR process.exit() is triggered (can be defined in the options) and the server process ends.
+3. first http-graceful-shutdown will run the "preShutdown" (async) function. Place your own function here (passed to the options object), if you need to have all HTTP sockets available and untouched.
+4. then alle empty connections are closed and destroyed and
+5. http-graceful-shutdown will block any new requests
+6. If possible, http-graceful-shutdown communicates to the clients that the server is about to close (connection close header)
+7. http-graceful-shutdown now tries to wait till all sockets are finished, then destroys the all remaining sockets
+8. now it is time to run the "onShutdown" (async) function (if such a function is passed to the options object)
+9. as soon as this onShutdown function has ended, the "finally" (sync) function is executed (if passed to the options)
+10. now the event loop cleared up OR process.exit() is triggered (can be defined in the options) and the server process ends.
 
 ## Options
 
@@ -118,6 +122,7 @@ Request │  V Resp │                                V Resp.     │
 - **timeout:** You can define the maximum time that the shutdown process may take (timeout option). If after this time, connections are still open or the shutdown process is still running, then the remaining connections will be forcibly closed and the server process is terminated.
 - **signals** Here you can define which signals can trigger the shutdown process (SIGINT, SIGTERM, SIGKILL, SIGHUP, SIGUSR2, ...)
 - **development** If true, the shutdown process is much shorter, because it just terminates the server, ignoring open connections, shutdown function, finally function ...
+- **preShutdown** Place your own (not time consuming) callback function here, if you need to have all HTTP sockets available and untouched during cleanup. Needs to return a promise. (async). If you add an input parameter to your cleanup function (optional), the SIGNAL type that caused the shutdown is passed to your cleanup function. See example.
 - **onShutdown** place your (not time consuming) callback function, that will handle your additional cleanup things (e.g. close DB connections). Needs to return a promise. (async). If you add an input parameter to your cleanup function (optional), the SIGNAL type that caused the shutdown is passed to your cleanup function. See example.
 - **finally** here you can place a small (not time consuming) function, that will be handled at the end of the shutdown e.g. for logging of shutdown. (sync)
 - **forceExit** force process.exit() at the end oof the shutdown process - otherwise just let event loop clear
@@ -162,11 +167,12 @@ function() finalFunction {
 gracefulShutdown(server,
   {
     signals: 'SIGINT SIGTERM',
-    timeout: 10000,                  // timeout: 10 secs
-    development: false,              // not in dev mode
-    forceExit: true,                 // triggers process.exit() at the end of shutdown process
-    onShutdown: shutdownFunction,    // shutdown function (async) - e.g. for cleanup DB, ...
-    finally: finalFunction           // finally function (sync) - e.g. for logging
+    timeout: 10000,                   // timeout: 10 secs
+    development: false,               // not in dev mode
+    forceExit: true,                  // triggers process.exit() at the end of shutdown process
+    preShutdown: preShutdownFunction, // needed operation before httpConnections are shutted down
+    onShutdown: shutdownFunction,     // shutdown function (async) - e.g. for cleanup DB, ...
+    finally: finalFunction            // finally function (sync) - e.g. for logging
   }
 );
 ```
@@ -234,6 +240,7 @@ npm install debug express koa fastify
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
+| 3.1.0          | 2021-05-08     | refactoring, added preShutdown |
 | 3.0.2          | 2021-04-08     | updated docs |
 | 3.0.1          | 2021-02-26     | code cleanup |
 | 3.0.0          | 2021-02-25     | version 3.0 release |
