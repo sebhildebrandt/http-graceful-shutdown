@@ -113,6 +113,7 @@ Request │  V Resp │                                     V Resp.     │
 | timeout | 30000 | timeout till forced shutdown (in milli seconds) |
 | signals | 'SIGINT SIGTERM' | define the signals, that should be handled (separated by SPACE) |
 | development | false | if set to true, no graceful shutdown is proceeded to speed up dev-process |
+| preShutdown | - | not time consuming callback function. Needs to return a promise.<br>Here all HTTP sockets are still available and untouched |
 | onShutdown | - | not time consuming callback function. Needs to return a promise. |
 | forceExit | true | force process.exit - otherwise just let event loop clear |
 | finally | - | small, not time consuming function, that will<br>be handled at the end of the shutdown (not in dev-mode) |
@@ -159,7 +160,7 @@ function shutdownFunction(signal) {
 // finally function
 // -- sync function
 // -- should be very short (not time consuming)
-function() finalFunction {
+function finalFunction() {
   console.log('Server gracefulls shutted down.....')
 }
 
