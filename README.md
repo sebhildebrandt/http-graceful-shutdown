@@ -241,6 +241,8 @@ npm install debug express koa fastify
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
+| 3.1.2          | 2021-06-15     | fixed cleanupHttp() no timeout |
+| 3.1.1          | 2021-05-13     | updated docs |
 | 3.1.0          | 2021-05-08     | refactoring, added preShutdown |
 | 3.0.2          | 2021-04-08     | updated docs |
 | 3.0.1          | 2021-02-26     | code cleanup |
