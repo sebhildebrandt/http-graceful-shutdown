@@ -35,7 +35,7 @@ gracefulShutdown(server,
   {
     finally: function () {
       console.log();
-      console.log('Server gracefully shutted down.....');
+      console.log('Server graceful shut down completed.');
     }
   }
 );

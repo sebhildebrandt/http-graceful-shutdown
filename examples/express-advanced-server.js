@@ -62,7 +62,7 @@ function cleanup(signal) {
 gracefulShutdown(server,
   {
     signals: 'SIGINT SIGTERM',
-    timeout: 0,
+    timeout: 3000,
     development: false,
     preShutdown: preShutdown,
     onShutdown: cleanup,
@@ -70,7 +70,7 @@ gracefulShutdown(server,
     finally: function () {
       console.log();
       console.log('In "finally" function');
-      console.log('... Server gracefully shutted down.....');
+      console.log('Server graceful shut down completed.');
     }
   }
 );
