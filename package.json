@@ -28,7 +28,8 @@
     "http-terminate",
     "shutdown",
     "kubernetes",
-    "prometheus"
+    "prometheus",
+    "backend"
   ],
   "author": "Sebastian Hildebrandt <hildebrandt@plus-innovations.com> (https://plus-innovations.com)",
   "license": "MIT",

@@ -241,7 +241,7 @@ npm install debug express koa fastify
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
-| 3.1.4          | 2021-08-03     | updated docs |
+| 3.1.4          | 2021-08-27     | updated docs |
 | 3.1.3          | 2021-08-03     | fixed handle events once (thanks to Igor Basov) |
 | 3.1.2          | 2021-06-15     | fixed cleanupHttp() no timeout |
 | 3.1.1          | 2021-05-13     | updated docs |
