@@ -8,13 +8,13 @@
              |_|      |___/
 ```
 
-Gracefully shuts down [node.js][nodejs-url] http server. More than 4 Mio downloads overall.
+Gracefully shuts down [node.js][nodejs-url] http server. More than 5 Mio downloads overall.
 
   [![NPM Version][npm-image]][npm-url]
   [![NPM Downloads][downloads-image]][downloads-url]
   [![Git Issues][issues-img]][issues-url]
   [![Closed Issues][closed-issues-img]][closed-issues-url]
-  [![deps status][daviddm-img]][daviddm-url]
+  [![deps status][dependencies-img]][dependencies-url]
   [![Code Quality: Javascript][lgtm-badge]][lgtm-badge-url]
   [![Total alerts][lgtm-alerts]][lgtm-alerts-url]
   [![Caretaker][caretaker-image]][caretaker-url]
@@ -241,6 +241,7 @@ npm install debug express koa fastify
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
+| 3.1.5          | 2021-11-08     | updated docs |
 | 3.1.4          | 2021-08-27     | updated docs |
 | 3.1.3          | 2021-08-03     | fixed handle events once (thanks to Igor Basov) |
 | 3.1.2          | 2021-06-15     | fixed cleanupHttp() no timeout |
@@ -342,6 +343,9 @@ Written by Sebastian Hildebrandt [sebhildebrandt](https://github.com/sebhildebra
 [http-url]: https://nodejs.org/api/http.html
 [http2-url]: https://nodejs.org/api/http2.html
 [debug-url]: https://github.com/visionmedia/debug
+
+[dependencies-url]: https://www.npmjs.com/package/http-graceful-shutdown?activeTab=dependencies
+[dependencies-img]: https://img.shields.io/librariesio/release/npm/http-graceful-shutdown.svg?style=flat-square
 
 [daviddm-url]: https://david-dm.org/sebhildebrandt/http-graceful-shutdown
 [daviddm-img]: https://img.shields.io/david/sebhildebrandt/http-graceful-shutdown.svg?style=flat-square
