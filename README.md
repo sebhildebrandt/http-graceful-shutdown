@@ -8,7 +8,7 @@
              |_|      |___/
 ```
 
-Gracefully shuts down [node.js][nodejs-url] http server. More than 5 Mio downloads overall.
+Gracefully shuts down [node.js][nodejs-url] http server. More than 6 Mio downloads overall.
 
   [![NPM Version][npm-image]][npm-url]
   [![NPM Downloads][downloads-image]][downloads-url]
@@ -241,6 +241,7 @@ npm install debug express koa fastify
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
+| 3.1.6          | 2022-02-27     | updated dependencies |
 | 3.1.5          | 2021-11-08     | updated docs |
 | 3.1.4          | 2021-08-27     | updated docs |
 | 3.1.3          | 2021-08-03     | fixed handle events once (thanks to Igor Basov) |
