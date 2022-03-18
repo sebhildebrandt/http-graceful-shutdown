@@ -241,6 +241,7 @@ npm install debug express koa fastify
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
+| 3.1.7          | 2022-03-18     | updated dependencies, updated docs |
 | 3.1.6          | 2022-02-27     | updated dependencies |
 | 3.1.5          | 2021-11-08     | updated docs |
 | 3.1.4          | 2021-08-27     | updated docs |
@@ -300,7 +301,7 @@ Written by Sebastian Hildebrandt [sebhildebrandt](https://github.com/sebhildebra
 
 >The [`MIT`][license-url] License (MIT)
 >
->Copyright &copy; 2015-2021 Sebastian Hildebrandt, [+innovations](http://www.plus-innovations.com).
+>Copyright &copy; 2015-2022 Sebastian Hildebrandt, [+innovations](http://www.plus-innovations.com).
 >
 >Permission is hereby granted, free of charge, to any person obtaining a copy
 >of this software and associated documentation files (the "Software"), to deal
