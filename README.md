@@ -33,13 +33,13 @@ Gracefully shuts down [node.js][nodejs-url] http server. More than 6 Mio downloa
 
 - tracks all connections
 - stops the server from accepting new connections on shutdown
-- graceful communication to all connected clients of server intention to shutdown
+- graceful communication to all connected clients of server intention to shut down
 - immediately destroys all sockets without an attached HTTP request
 - properly handles all HTTP and HTTPS connections
 - possibility to define cleanup functions (e.g. closing DB connections)
 - preShutdown function if you need to have all HTTP sockets available and untouched
 - choose between shutting down by function call or triggered by SIGINT, SIGTERM, ...
-- choose between final forcefull process termination node.js (process.exit) or clearing event loop (options).
+- choose between final forceful process termination node.js (process.exit) or clearing event loop (options).
 
 ## Quick Start
 
@@ -95,38 +95,38 @@ Request │  V Resp │                                     V Resp.     │
 ────────┴─────────┴─────────────────────────────────────────────────┴─────────────────────────────────────────────────────────
 ```
 
-1. usually your NODE http server (the black bar in the middle) replies to client requests and sends responses
+1. usually, your NODE http server (the black bar in the middle) replies to client requests and sends responses
 2. if your server receives a termination signal (e.g. SIGINT - Ctrl-C) from its parent, http-graceful-shutdown starts the shutdown procedure
-3. first http-graceful-shutdown will run the "preShutdown" (async) function. Place your own function here (passed to the options object), if you need to have all HTTP sockets available and untouched.
-4. then alle empty connections are closed and destroyed and
+3. first, http-graceful-shutdown will run the "preShutdown" (async) function. Place your own function here (passed to the options object), if you need to have all HTTP sockets available and untouched.
+4. then all empty connections are closed and destroyed and
 5. http-graceful-shutdown will block any new requests
-6. If possible, http-graceful-shutdown communicates to the clients that the server is about to close (connection close header)
+6. if possible, http-graceful-shutdown communicates to the clients that the server is about to close (connection close header)
 7. http-graceful-shutdown now tries to wait till all sockets are finished, then destroys the all remaining sockets
 8. now it is time to run the "onShutdown" (async) function (if such a function is passed to the options object)
 9. as soon as this onShutdown function has ended, the "finally" (sync) function is executed (if passed to the options)
-10. now the event loop cleared up OR process.exit() is triggered (can be defined in the options) and the server process ends.
+10. now the event loop is cleared up OR process.exit() is triggered (can be defined in the options) and the server process ends.
 
 ## Options
 
 | option         | default | Comments |
 | -------------- | --------------------- | ---------------------- |
-| timeout | 30000 | timeout till forced shutdown (in milli seconds) |
+| timeout | 30000 | timeout till forced shutdown (in milliseconds) |
 | signals | 'SIGINT SIGTERM' | define the signals, that should be handled (separated by SPACE) |
 | development | false | if set to true, no graceful shutdown is proceeded to speed up dev-process |
-| preShutdown | - | not time consuming callback function. Needs to return a promise.<br>Here all HTTP sockets are still available and untouched |
-| onShutdown | - | not time consuming callback function. Needs to return a promise. |
+| preShutdown | - | not time-consuming callback function. Needs to return a promise.<br>Here, all HTTP sockets are still available and untouched |
+| onShutdown | - | not time-consuming callback function. Needs to return a promise. |
 | forceExit | true | force process.exit - otherwise just let event loop clear |
-| finally | - | small, not time consuming function, that will<br>be handled at the end of the shutdown (not in dev-mode) |
+| finally | - | small, not time-consuming function, that will<br>be handled at the end of the shutdown (not in dev-mode) |
 
 ### Option Explanation
 
 - **timeout:** You can define the maximum time that the shutdown process may take (timeout option). If after this time, connections are still open or the shutdown process is still running, then the remaining connections will be forcibly closed and the server process is terminated.
 - **signals** Here you can define which signals can trigger the shutdown process (SIGINT, SIGTERM, SIGKILL, SIGHUP, SIGUSR2, ...)
 - **development** If true, the shutdown process is much shorter, because it just terminates the server, ignoring open connections, shutdown function, finally function ...
-- **preShutdown** Place your own (not time consuming) callback function here, if you need to have all HTTP sockets available and untouched during cleanup. Needs to return a promise. (async). If you add an input parameter to your cleanup function (optional), the SIGNAL type that caused the shutdown is passed to your cleanup function. See example.
-- **onShutdown** place your (not time consuming) callback function, that will handle your additional cleanup things (e.g. close DB connections). Needs to return a promise. (async). If you add an input parameter to your cleanup function (optional), the SIGNAL type that caused the shutdown is passed to your cleanup function. See example.
-- **finally** here you can place a small (not time consuming) function, that will be handled at the end of the shutdown e.g. for logging of shutdown. (sync)
-- **forceExit** force process.exit() at the end oof the shutdown process - otherwise just let event loop clear
+- **preShutdown** Place your own (not time-consuming) callback function here, if you need to have all HTTP sockets available and untouched during cleanup. Needs to return a promise. (async). If you add an input parameter to your cleanup function (optional), the SIGNAL type that caused the shutdown is passed to your cleanup function. See example.
+- **onShutdown** place your (not time-consuming) callback function, that will handle your additional cleanup things (e.g. close DB connections). Needs to return a promise. (async). If you add an input parameter to your cleanup function (optional), the SIGNAL type that caused the shutdown is passed to your cleanup function. See example.
+- **finally** here you can place a small (not time-consuming) function, that will be handled at the end of the shutdown e.g. for logging of shutdown. (sync)
+- **forceExit** force process.exit() at the end of the shutdown process, otherwise just let event loop clear
 
 ### Advanced Options Example
 
@@ -241,6 +241,7 @@ npm install debug express koa fastify
 
 | Version        | Date           | Comment  |
 | -------------- | -------------- | -------- |
+| 3.1.8          | 2022-07-27     | updated docs, fixed typos |
 | 3.1.7          | 2022-03-18     | updated dependencies, updated docs |
 | 3.1.6          | 2022-02-27     | updated dependencies |
 | 3.1.5          | 2021-11-08     | updated docs |
