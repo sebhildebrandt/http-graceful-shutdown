@@ -98,7 +98,7 @@ Request │  V Resp │                                     V Resp.     │
 1. usually your NODE http server (the black bar in the middle) replies to client requests and sends responses
 2. if your server receives a termination signal (e.g. SIGINT - Ctrl-C) from its parent, http-graceful-shutdown starts the shutdown procedure
 3. first http-graceful-shutdown will run the "preShutdown" (async) function. Place your own function here (passed to the options object), if you need to have all HTTP sockets available and untouched.
-4. then alle empty connections are closed and destroyed and
+4. then all empty connections are closed and destroyed and
 5. http-graceful-shutdown will block any new requests
 6. If possible, http-graceful-shutdown communicates to the clients that the server is about to close (connection close header)
 7. http-graceful-shutdown now tries to wait till all sockets are finished, then destroys the all remaining sockets
