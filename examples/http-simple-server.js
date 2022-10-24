@@ -3,8 +3,8 @@ const gracefulShutdown = require('../lib/index');
 const port = 3000;
 
 const server = http.createServer((req, res) => {
-  res.setHeader('Content-Type', 'text/html; charset=utf-8'),
-    res.writeHead(200);
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.writeHead(200);
   res.end('Hello World');
 });
 

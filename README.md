@@ -108,15 +108,15 @@ Request │  V Resp │                                     V Resp.     │
 
 ## Options
 
-| option         | default | Comments |
-| -------------- | --------------------- | ---------------------- |
-| timeout | 30000 | timeout till forced shutdown (in milliseconds) |
-| signals | 'SIGINT SIGTERM' | define the signals, that should be handled (separated by SPACE) |
-| development | false | if set to true, no graceful shutdown is proceeded to speed up dev-process |
-| preShutdown | - | not time-consuming callback function. Needs to return a promise.<br>Here, all HTTP sockets are still available and untouched |
-| onShutdown | - | not time-consuming callback function. Needs to return a promise. |
-| forceExit | true | force process.exit - otherwise just let event loop clear |
-| finally | - | small, not time-consuming function, that will<br>be handled at the end of the shutdown (not in dev-mode) |
+| option      | default          | Comments                                                                                                                     |
+| ----------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| timeout     | 30000            | timeout till forced shutdown (in milliseconds)                                                                               |
+| signals     | 'SIGINT SIGTERM' | define the signals, that should be handled (separated by SPACE)                                                              |
+| development | false            | if set to true, no graceful shutdown is proceeded to speed up dev-process                                                    |
+| preShutdown | -                | not time-consuming callback function. Needs to return a promise.<br>Here, all HTTP sockets are still available and untouched |
+| onShutdown  | -                | not time-consuming callback function. Needs to return a promise.                                                             |
+| forceExit   | true             | force process.exit - otherwise just let event loop clear                                                                     |
+| finally     | -                | small, not time-consuming function, that will<br>be handled at the end of the shutdown (not in dev-mode)                     |
 
 ### Option Explanation
 
@@ -239,45 +239,46 @@ npm install debug express koa fastify
 ```
 ## Version history
 
-| Version        | Date           | Comment  |
-| -------------- | -------------- | -------- |
-| 3.1.8          | 2022-07-27     | updated docs, fixed typos |
-| 3.1.7          | 2022-03-18     | updated dependencies, updated docs |
-| 3.1.6          | 2022-02-27     | updated dependencies |
-| 3.1.5          | 2021-11-08     | updated docs |
-| 3.1.4          | 2021-08-27     | updated docs |
-| 3.1.3          | 2021-08-03     | fixed handle events once (thanks to Igor Basov) |
-| 3.1.2          | 2021-06-15     | fixed cleanupHttp() no timeout |
-| 3.1.1          | 2021-05-13     | updated docs |
-| 3.1.0          | 2021-05-08     | refactoring, added preShutdown |
-| 3.0.2          | 2021-04-08     | updated docs |
-| 3.0.1          | 2021-02-26     | code cleanup |
-| 3.0.0          | 2021-02-25     | version 3.0 release |
-| 2.4.0          | 2021-02-15     | added forceExit option (defaults to true) |
-| 2.3.2          | 2019-06-14     | typescript typings fix |
-| 2.3.1          | 2019-05-31     | updated docs, added typescript typings |
-| 2.3.0          | 2019-05-30     | added manual shutdown (for tests) see docs below |
-| 2.2.3          | 2019-02-01     | updated docs, debug |
-| 2.2.2          | 2018-12-28     | updated docs, keywords |
-| 2.2.1          | 2018-11-20     | updated docs |
-| 2.2.0          | 2018-11-19     | added (optional) signal type to shutdown function - see example |
-| 2.1.3          | 2018-11-06     | updated docs |
-| 2.1.2          | 2018-11-03     | updated dependencies (version bump), updated docs |
-| 2.1.1          | 2018-02-28     | extended `isFunction` to support e.g. AsyncFunctions  |
-| 2.1.0          | 2018-02-11     | bug fixing onShutdown method was called before `server.close`  |
-| 2.0.6          | 2017-11-06     | updated docs, code cleanup |
-| 2.0.5          | 2017-11-06     | updated dependencies, modifications gitignore, added docs |
-| 2.0.4          | 2017-09-21     | updated dependencies, modifications gitignore |
-| 2.0.3          | 2017-06-18     | updated dependencies |
-| 2.0.2          | 2017-05-27     | fixed return value 0 |
-| 2.0.1          | 2017-04-24     | modified documentation |
-| 2.0.0          | 2017-04-24     | added 'onShutdown' option, renamed 'callback' option to 'finally' |
-| 1.0.6          | 2016-02-03     | adding more explicit debug information and documentation |
-| 1.0.5          | 2016-02-01     | better handling of closing connections |
-| 1.0.4          | 2015-10-01     | small fixes |
-| 1.0.3          | 2015-09-15     | updated docs |
-| 1.0.1          | 2015-09-14     | updated docs, reformated code |
-| 1.0.0          | 2015-09-14     | initial release |
+| Version | Date       | Comment                                                           |
+| ------- | ---------- | ----------------------------------------------------------------- |
+| 3.1.9   | 2022-10-24 | updated docs, code cleanup                                        |
+| 3.1.8   | 2022-07-27 | updated docs, fixed typos                                         |
+| 3.1.7   | 2022-03-18 | updated dependencies, updated docs                                |
+| 3.1.6   | 2022-02-27 | updated dependencies                                              |
+| 3.1.5   | 2021-11-08 | updated docs                                                      |
+| 3.1.4   | 2021-08-27 | updated docs                                                      |
+| 3.1.3   | 2021-08-03 | fixed handle events once (thanks to Igor Basov)                   |
+| 3.1.2   | 2021-06-15 | fixed cleanupHttp() no timeout                                    |
+| 3.1.1   | 2021-05-13 | updated docs                                                      |
+| 3.1.0   | 2021-05-08 | refactoring, added preShutdown                                    |
+| 3.0.2   | 2021-04-08 | updated docs                                                      |
+| 3.0.1   | 2021-02-26 | code cleanup                                                      |
+| 3.0.0   | 2021-02-25 | version 3.0 release                                               |
+| 2.4.0   | 2021-02-15 | added forceExit option (defaults to true)                         |
+| 2.3.2   | 2019-06-14 | typescript typings fix                                            |
+| 2.3.1   | 2019-05-31 | updated docs, added typescript typings                            |
+| 2.3.0   | 2019-05-30 | added manual shutdown (for tests) see docs below                  |
+| 2.2.3   | 2019-02-01 | updated docs, debug                                               |
+| 2.2.2   | 2018-12-28 | updated docs, keywords                                            |
+| 2.2.1   | 2018-11-20 | updated docs                                                      |
+| 2.2.0   | 2018-11-19 | added (optional) signal type to shutdown function - see example   |
+| 2.1.3   | 2018-11-06 | updated docs                                                      |
+| 2.1.2   | 2018-11-03 | updated dependencies (version bump), updated docs                 |
+| 2.1.1   | 2018-02-28 | extended `isFunction` to support e.g. AsyncFunctions              |
+| 2.1.0   | 2018-02-11 | bug fixing onShutdown method was called before `server.close`     |
+| 2.0.6   | 2017-11-06 | updated docs, code cleanup                                        |
+| 2.0.5   | 2017-11-06 | updated dependencies, modifications gitignore, added docs         |
+| 2.0.4   | 2017-09-21 | updated dependencies, modifications gitignore                     |
+| 2.0.3   | 2017-06-18 | updated dependencies                                              |
+| 2.0.2   | 2017-05-27 | fixed return value 0                                              |
+| 2.0.1   | 2017-04-24 | modified documentation                                            |
+| 2.0.0   | 2017-04-24 | added 'onShutdown' option, renamed 'callback' option to 'finally' |
+| 1.0.6   | 2016-02-03 | adding more explicit debug information and documentation          |
+| 1.0.5   | 2016-02-01 | better handling of closing connections                            |
+| 1.0.4   | 2015-10-01 | small fixes                                                       |
+| 1.0.3   | 2015-09-15 | updated docs                                                      |
+| 1.0.1   | 2015-09-14 | updated docs, reformated code                                     |
+| 1.0.0   | 2015-09-14 | initial release                                                   |
 
 ## Comments
 
