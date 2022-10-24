@@ -8,7 +8,7 @@
              |_|      |___/
 ```
 
-Gracefully shuts down [node.js][nodejs-url] http server. More than 6 Mio downloads overall.
+Gracefully shuts down [node.js][nodejs-url] http server. More than 10 Mio downloads overall.
 
   [![NPM Version][npm-image]][npm-url]
   [![NPM Downloads][downloads-image]][downloads-url]
