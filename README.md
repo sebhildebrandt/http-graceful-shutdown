@@ -241,6 +241,7 @@ npm install debug express koa fastify
 
 | Version | Date       | Comment                                                           |
 | ------- | ---------- | ----------------------------------------------------------------- |
+| 3.1.10  | 2022-11-17 | forceExit handling adapted                                        |
 | 3.1.9   | 2022-10-24 | updated docs, code cleanup                                        |
 | 3.1.8   | 2022-07-27 | updated docs, fixed typos                                         |
 | 3.1.7   | 2022-03-18 | updated dependencies, updated docs                                |
