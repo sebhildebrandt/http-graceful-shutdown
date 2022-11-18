@@ -1,16 +1,8 @@
 const Fastify = require('fastify');
 const gracefulShutdown = require('../lib/index');
-const http2 = require('http2');
 const port = 3000;
-const server = http2.createServer((req, res) => {
-  handler(req, res);
-});
 
-const serverFactory = (handler, opts) => {
-  return server;
-};
-
-const fastify = Fastify({ serverFactory });
+const fastify = Fastify();
 
 // Declare a route
 fastify.get('/', function (request, reply) {
@@ -31,7 +23,7 @@ fastify.listen(port, function (err, address) {
   console.log('Press Ctrl-C to test shutdown');
 });
 
-gracefulShutdown(server,
+gracefulShutdown(fastify.server,
   {
     finally: function () {
       console.log();

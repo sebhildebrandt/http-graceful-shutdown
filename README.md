@@ -20,7 +20,7 @@ Gracefully shuts down [node.js][nodejs-url] http server. More than 10 Mio downlo
   [![Caretaker][caretaker-image]][caretaker-url]
   [![MIT license][license-img]][license-url]
 
-**Version 3.0** just released. This version is fully backwards compatible to version 2.x but adds much better handling under the hood.
+**Version 3.0** just released. This version is fully backwards compatible to version 2.x but adds much better handling under the hood. More that 10 Mio downloads.
 
 - can be used with [express][express-url], [koa][koa-url], [fastify][fastify-url], native node [http][http-url], [http2][http2-url] ... see examples
 - simple to use
@@ -241,6 +241,7 @@ npm install debug express koa fastify
 
 | Version | Date       | Comment                                                           |
 | ------- | ---------- | ----------------------------------------------------------------- |
+| 3.1.11  | 2022-11-18 | updated examples                                                  |
 | 3.1.10  | 2022-11-17 | forceExit handling adapted                                        |
 | 3.1.9   | 2022-10-24 | updated docs, code cleanup                                        |
 | 3.1.8   | 2022-07-27 | updated docs, fixed typos                                         |
