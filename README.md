@@ -15,8 +15,6 @@ Gracefully shuts down [node.js][nodejs-url] http server. More than 10 Mio downlo
   [![Git Issues][issues-img]][issues-url]
   [![Closed Issues][closed-issues-img]][closed-issues-url]
   [![deps status][dependencies-img]][dependencies-url]
-  [![Code Quality: Javascript][lgtm-badge]][lgtm-badge-url]
-  [![Total alerts][lgtm-alerts]][lgtm-alerts-url]
   [![Caretaker][caretaker-image]][caretaker-url]
   [![MIT license][license-img]][license-url]
 
@@ -333,11 +331,6 @@ Written by Sebastian Hildebrandt [sebhildebrandt](https://github.com/sebhildebra
 [license-url]: https://github.com/sebhildebrandt/http-graceful-shutdown/blob/master/LICENSE
 [license-img]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
 [npmjs-license]: https://img.shields.io/npm/l/http-graceful-shutdown.svg?style=flat-square
-
-[lgtm-badge]: https://img.shields.io/lgtm/grade/javascript/g/sebhildebrandt/http-graceful-shutdown.svg?style=flat-square
-[lgtm-badge-url]: https://lgtm.com/projects/g/sebhildebrandt/http-graceful-shutdown/context:javascript
-[lgtm-alerts]: https://img.shields.io/lgtm/alerts/g/sebhildebrandt/http-graceful-shutdown.svg?style=flat-square
-[lgtm-alerts-url]: https://lgtm.com/projects/g/sebhildebrandt/http-graceful-shutdown/alerts
 
 [caretaker-url]: https://github.com/sebhildebrandt
 [caretaker-image]: https://img.shields.io/badge/caretaker-sebhildebrandt-blue.svg?style=flat-square
