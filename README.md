@@ -239,7 +239,8 @@ npm install debug express koa fastify
 
 | Version | Date       | Comment                                                           |
 | ------- | ---------- | ----------------------------------------------------------------- |
-| 3.1.12  | 2023-02-11 | fix forceExit default value                                       |
+| 3.1.13  | 2023-02-11 | fix forceExit default value                                       |
+| 3.1.12  | 2022-12-04 | changed lgtm to github scanning                                   |
 | 3.1.11  | 2022-11-18 | updated examples                                                  |
 | 3.1.10  | 2022-11-17 | forceExit handling adapted                                        |
 | 3.1.9   | 2022-10-24 | updated docs, code cleanup                                        |
