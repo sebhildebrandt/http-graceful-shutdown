@@ -239,6 +239,7 @@ npm install debug express koa fastify
 
 | Version | Date       | Comment                                                           |
 | ------- | ---------- | ----------------------------------------------------------------- |
+| 3.1.12  | 2023-02-11 | fix forceExit default value                                       |
 | 3.1.11  | 2022-11-18 | updated examples                                                  |
 | 3.1.10  | 2022-11-17 | forceExit handling adapted                                        |
 | 3.1.9   | 2022-10-24 | updated docs, code cleanup                                        |
@@ -303,7 +304,7 @@ Written by Sebastian Hildebrandt [sebhildebrandt](https://github.com/sebhildebra
 
 >The [`MIT`][license-url] License (MIT)
 >
->Copyright &copy; 2015-2022 Sebastian Hildebrandt, [+innovations](http://www.plus-innovations.com).
+>Copyright &copy; 2015-2023 Sebastian Hildebrandt, [+innovations](http://www.plus-innovations.com).
 >
 >Permission is hereby granted, free of charge, to any person obtaining a copy
 >of this software and associated documentation files (the "Software"), to deal
