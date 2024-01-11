@@ -1,6 +1,6 @@
 {
   "name": "http-graceful-shutdown",
-  "version": "3.1.13",
+  "version": "3.1.14",
   "description": "gracefully shuts downs http server",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
