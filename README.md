@@ -1,43 +1,53 @@
 # http-graceful-shutdown
 
 ```
-  _   _   _                                  __      _        _        _      _
- | |_| |_| |_ _ __ ___ __ _ _ _ __ _ __ ___ / _|_  _| |___ __| |_ _  _| |_ __| |_____ __ ___ _
- | ' \  _|  _| '_ \___/ _` | '_/ _` / _/ -_)  _| || | |___(_-< ' \ || |  _/ _` / _ \ V  V / ' \
- |_||_\__|\__| .__/   \__, |_| \__,_\__\___|_|  \_,_|_|   /__/_||_\_,_|\__\__,_\___/\_/\_/|_||_|
-             |_|      |___/
+ _   _   _                                  __      _        _        _      _
+| |_| |_| |_ _ __ ___ __ _ _ _ __ _ __ ___ / _|_  _| |___ __| |_ _  _| |_ __| |_____ __ ___ _
+| ' \  _|  _| '_ \___/ _` | '_/ _` / _/ -_)  _| || | |___(_-< ' \ || |  _/ _` / _ \ V  V / ' \
+|_||_\__|\__| .__/   \__, |_| \__,_\__\___|_|  \_,_|_|   /__/_||_\_,_|\__\__,_\___/\_/\_/|_||_|
+            |_|      |___/
 ```
 
-Gracefully shuts down [node.js][nodejs-url] http server. More than 10 Mio downloads overall.
+Gracefully shuts down [node.js][nodejs-url] http server. More than 10 Mio
+downloads overall.
 
-  [![NPM Version][npm-image]][npm-url]
-  [![NPM Downloads][downloads-image]][downloads-url]
-  [![Git Issues][issues-img]][issues-url]
-  [![Closed Issues][closed-issues-img]][closed-issues-url]
-  [![deps status][dependencies-img]][dependencies-url]
-  [![Caretaker][caretaker-image]][caretaker-url]
-  [![MIT license][license-img]][license-url]
+[![NPM Version][npm-image]][npm-url]
+[![NPM Downloads][downloads-image]][downloads-url]
+[![Git Issues][issues-img]][issues-url]
+[![Closed Issues][closed-issues-img]][closed-issues-url]
+[![deps status][dependencies-img]][dependencies-url]
+[![Caretaker][caretaker-image]][caretaker-url]
+[![MIT license][license-img]][license-url]
 
-**Version 3.0** just released. This version is fully backwards compatible to version 2.x but adds much better handling under the hood. More that 10 Mio downloads.
+**Version 3.0** just released. This version is fully backwards compatible to
+version 2.x but adds much better handling under the hood. More that 10 Mio
+downloads.
 
-- can be used with [express][express-url], [koa][koa-url], [fastify][fastify-url], native node [http][http-url], [http2][http2-url] ... see examples
+- can be used with [express][express-url], [koa][koa-url],
+  [fastify][fastify-url], native node [http][http-url], [http2][http2-url] ...
+  see examples
 - simple to use
 - configurable to your needs
 - add your own cleanup function
 
 ### Features
 
-`http-graceful-shutdown` manages a secure and save shutdown of your http server application:
+`http-graceful-shutdown` manages a secure and save shutdown of your http server
+application:
 
 - tracks all connections
 - stops the server from accepting new connections on shutdown
-- graceful communication to all connected clients of server intention to shut down
+- graceful communication to all connected clients of server intention to shut
+  down
 - immediately destroys all sockets without an attached HTTP request
 - properly handles all HTTP and HTTPS connections
 - possibility to define cleanup functions (e.g. closing DB connections)
-- preShutdown function if you need to have all HTTP sockets available and untouched
-- choose between shutting down by function call or triggered by SIGINT, SIGTERM, ...
-- choose between final forceful process termination node.js (process.exit) or clearing event loop (options).
+- preShutdown function if you need to have all HTTP sockets available and
+  untouched
+- choose between shutting down by function call or triggered by SIGINT, SIGTERM,
+  ...
+- choose between final forceful process termination node.js (process.exit) or
+  clearing event loop (options).
 
 ## Quick Start
 
@@ -93,16 +103,25 @@ Request │  V Resp │                                     V Resp.     │
 ────────┴─────────┴─────────────────────────────────────────────────┴─────────────────────────────────────────────────────────
 ```
 
-1. usually, your NODE http server (the black bar in the middle) replies to client requests and sends responses
-2. if your server receives a termination signal (e.g. SIGINT - Ctrl-C) from its parent, http-graceful-shutdown starts the shutdown procedure
-3. first, http-graceful-shutdown will run the "preShutdown" (async) function. Place your own function here (passed to the options object), if you need to have all HTTP sockets available and untouched.
+1. usually, your NODE http server (the black bar in the middle) replies to
+   client requests and sends responses
+2. if your server receives a termination signal (e.g. SIGINT - Ctrl-C) from its
+   parent, http-graceful-shutdown starts the shutdown procedure
+3. first, http-graceful-shutdown will run the "preShutdown" (async) function.
+   Place your own function here (passed to the options object), if you need to
+   have all HTTP sockets available and untouched.
 4. then all empty connections are closed and destroyed and
 5. http-graceful-shutdown will block any new requests
-6. if possible, http-graceful-shutdown communicates to the clients that the server is about to close (connection close header)
-7. http-graceful-shutdown now tries to wait till all sockets are finished, then destroys the all remaining sockets
-8. now it is time to run the "onShutdown" (async) function (if such a function is passed to the options object)
-9. as soon as this onShutdown function has ended, the "finally" (sync) function is executed (if passed to the options)
-10. now the event loop is cleared up OR process.exit() is triggered (can be defined in the options) and the server process ends.
+6. if possible, http-graceful-shutdown communicates to the clients that the
+   server is about to close (connection close header)
+7. http-graceful-shutdown now tries to wait till all sockets are finished, then
+   destroys the all remaining sockets
+8. now it is time to run the "onShutdown" (async) function (if such a function
+   is passed to the options object)
+9. as soon as this onShutdown function has ended, the "finally" (sync) function
+   is executed (if passed to the options)
+10. now the event loop is cleared up OR process.exit() is triggered (can be
+    defined in the options) and the server process ends.
 
 ## Options
 
@@ -118,17 +137,35 @@ Request │  V Resp │                                     V Resp.     │
 
 ### Option Explanation
 
-- **timeout:** You can define the maximum time that the shutdown process may take (timeout option). If after this time, connections are still open or the shutdown process is still running, then the remaining connections will be forcibly closed and the server process is terminated.
-- **signals** Here you can define which signals can trigger the shutdown process (SIGINT, SIGTERM, SIGKILL, SIGHUP, SIGUSR2, ...)
-- **development** If true, the shutdown process is much shorter, because it just terminates the server, ignoring open connections, shutdown function, finally function ...
-- **preShutdown** Place your own (not time-consuming) callback function here, if you need to have all HTTP sockets available and untouched during cleanup. Needs to return a promise. (async). If you add an input parameter to your cleanup function (optional), the SIGNAL type that caused the shutdown is passed to your cleanup function. See example.
-- **onShutdown** place your (not time-consuming) callback function, that will handle your additional cleanup things (e.g. close DB connections). Needs to return a promise. (async). If you add an input parameter to your cleanup function (optional), the SIGNAL type that caused the shutdown is passed to your cleanup function. See example.
-- **finally** here you can place a small (not time-consuming) function, that will be handled at the end of the shutdown e.g. for logging of shutdown. (sync)
-- **forceExit** force process.exit() at the end of the shutdown process, otherwise just let event loop clear
+- **timeout:** You can define the maximum time that the shutdown process may
+  take (timeout option). If after this time, connections are still open or the
+  shutdown process is still running, then the remaining connections will be
+  forcibly closed and the server process is terminated.
+- **signals** Here you can define which signals can trigger the shutdown process
+  (SIGINT, SIGTERM, SIGKILL, SIGHUP, SIGUSR2, ...)
+- **development** If true, the shutdown process is much shorter, because it just
+  terminates the server, ignoring open connections, shutdown function, finally
+  function ...
+- **preShutdown** Place your own (not time-consuming) callback function here, if
+  you need to have all HTTP sockets available and untouched during cleanup.
+  Needs to return a promise. (async). If you add an input parameter to your
+  cleanup function (optional), the SIGNAL type that caused the shutdown is
+  passed to your cleanup function. See example.
+- **onShutdown** place your (not time-consuming) callback function, that will
+  handle your additional cleanup things (e.g. close DB connections). Needs to
+  return a promise. (async). If you add an input parameter to your cleanup
+  function (optional), the SIGNAL type that caused the shutdown is passed to
+  your cleanup function. See example.
+- **finally** here you can place a small (not time-consuming) function, that
+  will be handled at the end of the shutdown e.g. for logging of shutdown.
+  (sync)
+- **forceExit** force process.exit() at the end of the shutdown process,
+  otherwise just let event loop clear
 
 ### Advanced Options Example
 
-You can pass an options-object to specify your specific options for the graceful shutdown
+You can pass an options-object to specify your specific options for the graceful
+shutdown
 
 The following example uses all possible options:
 
@@ -175,6 +212,7 @@ gracefulShutdown(server,
   }
 );
 ```
+
 ### Trigger shutdown manually
 
 You can now trigger gracefulShutdown programatically (e.g. for tests) like so:
@@ -192,7 +230,9 @@ afterAll(async () => {
 
 ### Do not force process.exit()
 
-With the `forceExit` option, you can define how your node server process ends: when setting `forceExit` to `false`, you just let the event loop clear and then the proccess ends automatically:
+With the `forceExit` option, you can define how your node server process ends:
+when setting `forceExit` to `false`, you just let the event loop clear and then
+the proccess ends automatically:
 
 ```js
 const gracefulShutdown = require('http-graceful-shutdown');
@@ -210,12 +250,13 @@ gracefulShutdown(server, {
 });
 ```
 
-If you want an explicit process.exit() at the end, set `forceExit` to `true` (which is the default).
+If you want an explicit process.exit() at the end, set `forceExit` to `true`
+(which is the default).
 
 ### Debug
 
-If you want to get debug notes ([debug][debug-url] is a dependency of this module), just set the DEBUG environment variable to enable
- debugging:
+If you want to get debug notes ([debug][debug-url] is a dependency of this
+module), just set the DEBUG environment variable to enable debugging:
 
 ```
 export DEBUG=http-graceful-shutdown
@@ -229,16 +270,19 @@ set DEBUG=http-graceful-shutdown
 
 ## Examples
 
-You can find examples how to use `http-graceful-shutdown` with Express, Koa, http, http2, fastify in the `examples` directory.
-To run the examples, be sure to install debug and express, koa or fastify.
+You can find examples how to use `http-graceful-shutdown` with Express, Koa,
+http, http2, fastify in the `examples` directory. To run the examples, be sure
+to install debug and express, koa or fastify.
 
 ```
 npm install debug express koa fastify
 ```
+
 ## Version history
 
 | Version | Date       | Comment                                                           |
 | ------- | ---------- | ----------------------------------------------------------------- |
+| 3.1.14  | 2025-01-03 | updated docs                                                      |
 | 3.1.13  | 2023-02-11 | fix forceExit default value                                       |
 | 3.1.12  | 2022-12-04 | changed lgtm to github scanning                                   |
 | 3.1.11  | 2022-11-18 | updated examples                                                  |
@@ -292,7 +336,8 @@ Sebastian Hildebrandt, [+innovations](http://www.plus-innovations.com)
 
 ## Credits
 
-Written by Sebastian Hildebrandt [sebhildebrandt](https://github.com/sebhildebrandt)
+Written by Sebastian Hildebrandt
+[sebhildebrandt](https://github.com/sebhildebrandt)
 
 #### Contributors
 
@@ -303,40 +348,38 @@ Written by Sebastian Hildebrandt [sebhildebrandt](https://github.com/sebhildebra
 
 ## License [![MIT license][license-img]][license-url]
 
->The [`MIT`][license-url] License (MIT)
+> The [`MIT`][license-url] License (MIT)
 >
->Copyright &copy; 2015-2023 Sebastian Hildebrandt, [+innovations](http://www.plus-innovations.com).
+> Copyright &copy; 2015-2025 Sebastian Hildebrandt,
+> [+innovations](http://www.plus-innovations.com).
 >
->Permission is hereby granted, free of charge, to any person obtaining a copy
->of this software and associated documentation files (the "Software"), to deal
->in the Software without restriction, including without limitation the rights
->to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
->copies of the Software, and to permit persons to whom the Software is
->furnished to do so, subject to the following conditions:
+> Permission is hereby granted, free of charge, to any person obtaining a copy
+> of this software and associated documentation files (the "Software"), to deal
+> in the Software without restriction, including without limitation the rights
+> to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+> copies of the Software, and to permit persons to whom the Software is
+> furnished to do so, subject to the following conditions:
 >
->The above copyright notice and this permission notice shall be included in
->all copies or substantial portions of the Software.
+> The above copyright notice and this permission notice shall be included in all
+> copies or substantial portions of the Software.
 >
->THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
->IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
->FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
->AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
->LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
->OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
->THE SOFTWARE.
+> THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+> AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+> OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+> SOFTWARE.
 
 [npm-image]: https://img.shields.io/npm/v/http-graceful-shutdown.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/http-graceful-shutdown
 [downloads-image]: https://img.shields.io/npm/dm/http-graceful-shutdown.svg?style=flat-square
 [downloads-url]: https://npmjs.org/package/http-graceful-shutdown
-
 [license-url]: https://github.com/sebhildebrandt/http-graceful-shutdown/blob/master/LICENSE
 [license-img]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
 [npmjs-license]: https://img.shields.io/npm/l/http-graceful-shutdown.svg?style=flat-square
-
 [caretaker-url]: https://github.com/sebhildebrandt
 [caretaker-image]: https://img.shields.io/badge/caretaker-sebhildebrandt-blue.svg?style=flat-square
-
 [nodejs-url]: https://nodejs.org/en/
 [express-url]: https://github.com/strongloop/expressjs.com
 [koa-url]: https://github.com/koajs/koa
@@ -344,13 +387,10 @@ Written by Sebastian Hildebrandt [sebhildebrandt](https://github.com/sebhildebra
 [http-url]: https://nodejs.org/api/http.html
 [http2-url]: https://nodejs.org/api/http2.html
 [debug-url]: https://github.com/visionmedia/debug
-
 [dependencies-url]: https://www.npmjs.com/package/http-graceful-shutdown?activeTab=dependencies
 [dependencies-img]: https://img.shields.io/librariesio/release/npm/http-graceful-shutdown.svg?style=flat-square
-
 [daviddm-url]: https://david-dm.org/sebhildebrandt/http-graceful-shutdown
 [daviddm-img]: https://img.shields.io/david/sebhildebrandt/http-graceful-shutdown.svg?style=flat-square
-
 [issues-img]: https://img.shields.io/github/issues/sebhildebrandt/http-graceful-shutdown.svg?style=flat-square
 [issues-url]: https://github.com/sebhildebrandt/http-graceful-shutdown/issues
 [closed-issues-img]: https://img.shields.io/github/issues-closed-raw/sebhildebrandt/http-graceful-shutdown.svg?style=flat-square&color=brightgreen
