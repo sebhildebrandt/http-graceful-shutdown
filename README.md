@@ -282,6 +282,7 @@ npm install debug express koa fastify
 
 | Version | Date       | Comment                                                           |
 | ------- | ---------- | ----------------------------------------------------------------- |
+| 3.1.15  | 2026-01-09 | code dleanup, updated docs                                        |
 | 3.1.14  | 2025-01-03 | updated docs                                                      |
 | 3.1.13  | 2023-02-11 | fix forceExit default value                                       |
 | 3.1.12  | 2022-12-04 | changed lgtm to github scanning                                   |
@@ -350,7 +351,7 @@ Written by Sebastian Hildebrandt
 
 > The [`MIT`][license-url] License (MIT)
 >
-> Copyright &copy; 2015-2025 Sebastian Hildebrandt,
+> Copyright &copy; 2015-2026 Sebastian Hildebrandt,
 > [+innovations](http://www.plus-innovations.com).
 >
 > Permission is hereby granted, free of charge, to any person obtaining a copy
