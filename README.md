@@ -8,7 +8,7 @@
             |_|      |___/
 ```
 
-Gracefully shuts down [node.js][nodejs-url] http server. More than 10 Mio
+Gracefully shuts down [node.js][nodejs-url] http server. More than 35 Mio
 downloads overall.
 
 [![NPM Version][npm-image]][npm-url]
@@ -20,7 +20,7 @@ downloads overall.
 [![MIT license][license-img]][license-url]
 
 **Version 3.0** just released. This version is fully backwards compatible to
-version 2.x but adds much better handling under the hood. More that 10 Mio
+version 2.x but adds much better handling under the hood. More that 30 Mio
 downloads.
 
 - can be used with [express][express-url], [koa][koa-url],
@@ -282,7 +282,8 @@ npm install debug express koa fastify
 
 | Version | Date       | Comment                                                           |
 | ------- | ---------- | ----------------------------------------------------------------- |
-| 3.1.15  | 2026-01-09 | code dleanup, updated docs                                        |
+| 3.1.16  | 2026-03-09 | fix returning closing promise, code cleanup                       |
+| 3.1.15  | 2026-01-09 | code cleanup, updated docs                                        |
 | 3.1.14  | 2025-01-03 | updated docs                                                      |
 | 3.1.13  | 2023-02-11 | fix forceExit default value                                       |
 | 3.1.12  | 2022-12-04 | changed lgtm to github scanning                                   |
