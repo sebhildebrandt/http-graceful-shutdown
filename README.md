@@ -19,9 +19,9 @@ downloads overall.
 [![Caretaker][caretaker-image]][caretaker-url]
 [![MIT license][license-img]][license-url]
 
-**Version 3.0** just released. This version is fully backwards compatible to
-version 2.x but adds much better handling under the hood. More that 30 Mio
-downloads.
+**Version 4.0** just released. This version requires node.js 16 or higher and
+contains some breaking changes — see
+[Breaking Changes in Version 4.0](#breaking-changes-in-version-40).
 
 - can be used with [express][express-url], [koa][koa-url],
   [fastify][fastify-url], native node [http][http-url], [http2][http2-url] ...
@@ -49,6 +49,41 @@ application:
 - choose between final forceful process termination node.js (process.exit) or
   clearing event loop (options).
 
+## Breaking Changes in Version 4.0
+
+Upgrading from 3.x: most applications will work unchanged. Check the following
+points:
+
+- **node.js 16 or higher required** (`engines` field was `>=4` before).
+- **Errors keep their type:** if the shutdown fails, the promise returned by the
+  manual shutdown function now rejects with the original `Error` object. In 3.x
+  it rejected with a stringified message (often just `{}`). If you match on that
+  rejection value, adjust your handling.
+- **`SIGKILL` and `SIGSTOP` are rejected:** passing them in the `signals` option
+  now throws at setup (they cannot be intercepted by node.js anyway). Unknown
+  signal names emit a process warning instead of being silently ignored.
+- **Second signal forces exit:** if another signal arrives while a shutdown is
+  already running (e.g. pressing Ctrl-C twice), the process now exits
+  immediately with exit code 1. In 3.x further signals were ignored, so a
+  hanging cleanup function could make the process unkillable except by SIGKILL.
+- **`forceExit: false` is respected on errors:** a failing shutdown no longer
+  calls `process.exit(1)` when `forceExit` is disabled; it sets
+  `process.exitCode = 1` and lets the event loop clear.
+
+Other notable changes (non-breaking):
+
+- the signal is now passed to the `finally` function (optional parameter)
+- the `finally` function may be async — a returned promise is awaited
+- the `finally` function also runs when the shutdown fails
+- the `timeout` option now also takes effect when in-flight requests hang:
+  remaining connections are forcefully destroyed after the timeout (in 3.x a
+  never-ending request could block the shutdown forever)
+- fixed a potential crash when a request socket was already gone when the
+  response finished (`req.socket` null, #27)
+- concurrent shutdown triggers (e.g. manual call plus signal) now share one
+  shutdown run instead of running twice
+- added a test suite (`npm test`)
+
 ## Quick Start
 
 ### Installation
@@ -56,6 +91,8 @@ application:
 ```bash
 $ npm install http-graceful-shutdown
 ```
+
+Requires node.js version 16 or higher.
 
 ### Basic Usage
 
@@ -118,8 +155,8 @@ Request │  V Resp │                                     V Resp.     │
    destroys the all remaining sockets
 8. now it is time to run the "onShutdown" (async) function (if such a function
    is passed to the options object)
-9. as soon as this onShutdown function has ended, the "finally" (sync) function
-   is executed (if passed to the options)
+9. as soon as this onShutdown function has ended, the "finally" function is
+   executed (if passed to the options)
 10. now the event loop is cleared up OR process.exit() is triggered (can be
     defined in the options) and the server process ends.
 
@@ -133,7 +170,7 @@ Request │  V Resp │                                     V Resp.     │
 | preShutdown | -                | not time-consuming callback function. Needs to return a promise.<br>Here, all HTTP sockets are still available and untouched |
 | onShutdown  | -                | not time-consuming callback function. Needs to return a promise.                                                             |
 | forceExit   | true             | force process.exit - otherwise just let event loop clear                                                                     |
-| finally     | -                | small, not time-consuming function, that will<br>be handled at the end of the shutdown (not in dev-mode)                     |
+| finally     | -                | small, not time-consuming function (sync or async), that will<br>be handled at the end of the shutdown (not in dev-mode)     |
 
 ### Option Explanation
 
@@ -142,7 +179,8 @@ Request │  V Resp │                                     V Resp.     │
   shutdown process is still running, then the remaining connections will be
   forcibly closed and the server process is terminated.
 - **signals** Here you can define which signals can trigger the shutdown process
-  (SIGINT, SIGTERM, SIGKILL, SIGHUP, SIGUSR2, ...)
+  (SIGINT, SIGTERM, SIGHUP, SIGUSR2, ...). SIGKILL and SIGSTOP cannot be
+  intercepted and are rejected.
 - **development** If true, the shutdown process is much shorter, because it just
   terminates the server, ignoring open connections, shutdown function, finally
   function ...
@@ -157,8 +195,10 @@ Request │  V Resp │                                     V Resp.     │
   function (optional), the SIGNAL type that caused the shutdown is passed to
   your cleanup function. See example.
 - **finally** here you can place a small (not time-consuming) function, that
-  will be handled at the end of the shutdown e.g. for logging of shutdown.
-  (sync)
+  will be handled at the end of the shutdown e.g. for logging of shutdown —
+  also if the shutdown failed. Can be sync or async (a returned promise is
+  awaited). If you add an input parameter to your function (optional), the
+  SIGNAL type that caused the shutdown is passed to it.
 - **forceExit** force process.exit() at the end of the shutdown process,
   otherwise just let event loop clear
 
@@ -175,6 +215,17 @@ const gracefulShutdown = require('http-graceful-shutdown');
 // app: can be http, https, express, koa, fastity, ...
 server = app.listen(...);
 ...
+
+// your personal preShutdown function
+// - must return a promise
+// - HTTP sockets are still available and untouched here
+function preShutdownFunction(signal) {
+  return new Promise((resolve) => {
+    console.log('... called signal: ' + signal);
+    console.log('... in preShutdown');
+    resolve();
+  });
+}
 
 // your personal cleanup function
 // - must return a promise
@@ -208,7 +259,7 @@ gracefulShutdown(server,
     forceExit: true,                  // triggers process.exit() at the end of shutdown process
     preShutdown: preShutdownFunction, // needed operation before httpConnections are shutted down
     onShutdown: shutdownFunction,     // shutdown function (async) - e.g. for cleanup DB, ...
-    finally: finalFunction            // finally function (sync) - e.g. for logging
+    finally: finalFunction            // finally function (sync or async) - e.g. for logging
   }
 );
 ```
@@ -282,6 +333,7 @@ npm install debug express koa fastify
 
 | Version | Date       | Comment                                                           |
 | ------- | ---------- | ----------------------------------------------------------------- |
+| 4.0.0   | 2026-07-15 | breaking changes release - see "Breaking Changes in Version 4.0"  |
 | 3.1.16  | 2026-03-09 | fix returning closing promise, code cleanup                       |
 | 3.1.15  | 2026-01-09 | code cleanup, updated docs                                        |
 | 3.1.14  | 2025-01-03 | updated docs                                                      |

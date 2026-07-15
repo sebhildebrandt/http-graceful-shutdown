@@ -61,3 +61,26 @@ CVS
 .eslintrc.json
 package-lock.json
 yarn.lock
+
+# Notes
+NOTES.md
+
+# AI assistants
+.claude/
+.cursor/
+.copilot/
+.opencode/
+.gemini/
+
+# AI prompt/rule files
+**/.rules/
+**/.instructions/
+**/.prompts/
+.github/copilot-instructions.md
+
+# Common AI markdown/config files
+**/AGENTS.md
+**/CLAUDE.md
+**/GEMINI.md
+**/COPILOT.md
+**/AI.md

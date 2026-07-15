@@ -5,7 +5,7 @@
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --test test/test.js"
   },
   "files": [
     "lib/"
@@ -42,6 +42,6 @@
   },
   "engineStrict": true,
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=16.0.0"
   }
 }
